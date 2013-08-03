@@ -1,6 +1,6 @@
-(ns server.views.home
-  (:require [server.views.common :as common]
-            [server.models.utils :as utils]
+(ns karma-golf.views.home
+  (:require [karma-golf.views.common :as common]
+            [karma-golf.models.utils :as utils]
             [noir.core :as noir]
             )
   )

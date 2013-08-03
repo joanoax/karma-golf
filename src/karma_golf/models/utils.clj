@@ -1,4 +1,4 @@
-(ns server.models.utils
+(ns karma-golf.models.utils
   (:require [clojure.data.json :as json])
   )
 

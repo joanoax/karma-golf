@@ -1,7 +1,7 @@
-(ns server.server
+(ns karma-golf.server
   (:require [noir.server :as server]))
 
-(server/load-views-ns 'server.views)
+(server/load-views-ns 'karma-golf.views)
 
 (defn -main [& m]
   (let [mode (keyword (or (first m) :dev))

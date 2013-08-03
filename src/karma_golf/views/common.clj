@@ -1,4 +1,4 @@
-(ns server.views.common
+(ns karma-golf.views.common
   (:use [noir.core :only [defpartial]]
         [hiccup.page :only [include-css html5]]))
 
