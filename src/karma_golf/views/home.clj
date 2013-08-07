@@ -1,6 +1,8 @@
+
 (ns karma-golf.views.home
   (:require [karma-golf.views.common :as common]
             [karma-golf.models.utils :as utils]
+            [monger.core :as mg]
             [noir.core :as noir]
             )
   )
@@ -18,17 +20,31 @@ Start with 'Lorem
 ipsum dolor sit amet...'
 
 ")
+
+(def grid-size [15 8])
+
+
 (noir/defpage "/" []
   (common/layout
-   [:div#title
-    [:h1 "KARMA GOLF"]
-    [:br]
-    [:h2 "w/ lee carvallo"]
+   [:div#title.col-lg-4
     ]
-   [:div#play-golf
+   [:div#play-golf.col-lg-8.col-lg-offset-4
     [:div#game-main
-     lorem
+     [:table {:style "margin:auto;"}
+      (repeat (first grid-size)
+              [:tr
+               (repeat (second grid-size) [:td [:div.cell]])
+               ])
+      ]
+
      ]
+     [:div.piece1    
+      ]
     ]
-   )
+   ))
+
+(noir/defpage "/zillow/" []
+(slurp "/Users/jeikens/karma-golf/resources/public/main.html")
   )
+
+  

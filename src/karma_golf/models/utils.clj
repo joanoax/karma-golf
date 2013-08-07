@@ -1,6 +1,9 @@
 (ns karma-golf.models.utils
-  (:require [clojure.data.json :as json])
-  )
+  (:require [clojure.data.json :as json]
+            )
+   )
+  
+
 
 (def comment-maps (atom []))
 (defn key-tree
@@ -33,17 +36,21 @@
     {
      :body-html (:body the-map)
      :ups (:ups the-map)
+     :downs (:downs the-map)
      :replies (vec (map #(comments-list (:data %)) (:children (:data (:replies the-map)))))
   ;   :orig-replies (:replies the-map)
      })
   )
 
+(defn clean-comments [comments]
+   (map comments-list (-> comments second :data :children))
+  )
+
 ;code snippets from the repl 
-(def thing  (map comments-list (-> @comment-maps first second)))
 
 
-(defn populate-comment-maps []
-  (let [ linx (comment-links (from-reddit "/r/funny/"))]
+(defn populate-comment-maps [subreddit]
+  (let [ linx (comment-links (from-reddit subreddit))]
        (doseq [link linx]
          (swap! comment-maps conj (from-reddit link))
          (println "Downloaded  " link)
