@@ -1,13 +1,14 @@
 body{
-background-image: url("/img/karma-golf-bg.jpg");
+overflow:hidden;
+background-image: url("/img/karma-garden2.jpg");
 background-size: 100%;
 height:100%;
 width:100%;
 }
 h1{
-font-family: "Trebuchet MS", sans-serif;
+font-family: "Courier New", serif;
 color: #FFFFFF;
-font-size: 100px;
+font-size: 120px;
 }
 h2{
 font-family: "Trebuchet MS", sans-serif;
@@ -15,33 +16,64 @@ color: #FFFFFF;
 font-size: 62px;
 }
 #title{
+background-image: url("/img/kg-title.gif");
+background-size: 100%;
 position:absolute;
-z-index: 3;
-width:500px;
-opacity: 0.8;
-margin-top: 345px;
-margin-left: 100px;
-margin-right: auto;
+text-align:center;
+width:402px;
+height:776px;
+top: 0px;
+bottom: 0px;
+max-height: 100%;
+margin-top: auto;
+margin-bottom:auto;
+margin-left:50px;
 }
+
 #play-golf{
-background-color: #000000;
-//opacity: 0.9;
-border-radius: 20px;
-z-index: 2;
-position:absolute;
-margin-left: 40%;
-margin-right: 100px;
-margin-top: 5%;
+margin-top: 20px;
+margin-bottom:auto;
+height: 680px;
+text-align:center;
 }
 #game-main{
-margin: 20px 20px 20px 20px;
-font-family: "Trebuchet MS", sans-serif;
+border-radius: 10px;
+box-shadow: 0px 0px 5px 10px #000000;
+padding: 20px;
+margin: auto;
+font-family: "Comic Sans MS", sans-serif;
 font-size: 20px;
+width: 420px;
 color: #FFFFFF;
+
+}
+.piece1{
+position:fixed;
+background-image: url("/img/piece2.gif");
+background-size:100%
+width: 44px;
+height: 44px;
+border-radius: 5px;
+margin: 100px 100px;
+opacity: 0.8;
 }
 #comment{
 margin: 20px 20px 20px 20px;
-font-family: "Trebuchet MS", sans-serif;
+font-family: "Comic Sans MS", sans-serif;
 font-size: 20px;
 color: #FFFFFF;
+}
+td{
+width:46px;
+height: 46px;
+}
+.cell{
+width:44px;
+height:44px;
+border-style: solid;
+border-color: #00DDFF;
+margin: 1px 1px;
+border-radius: 5px;
+background-size:contain;
+background-color: #000;
 }

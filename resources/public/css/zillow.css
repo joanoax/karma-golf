@@ -1,0 +1,39 @@
+#col-left{
+    background-color:#CBA987;
+}
+#col-right{
+    background-color:#789ABC;
+}
+.col{
+    float:left;
+    }
+@media (min-width: 720px){
+    #col-left{
+        width:170px;
+    }
+    #col-center
+    {
+        max-width:inherit;
+    }
+    #center-container
+    {
+        min-width: 350px;
+        padding-left: 170px;
+        padding-right: 210px;
+    }
+    #col-right
+    {
+        width:200px
+    }
+
+    .col{
+        height: 100%;
+        display:inline-block;
+    }
+}
+
+@media(max-width: 720px){
+    .col{
+        width: 100%;
+    }
+}
