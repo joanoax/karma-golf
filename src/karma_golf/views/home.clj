@@ -4,6 +4,7 @@
             [karma-golf.models.utils :as utils]
             [monger.core :as mg]
             [noir.core :as noir]
+            [clojure.data.json :as json]
             )
   )
 
@@ -42,9 +43,3 @@ ipsum dolor sit amet...'
       ]
     ]
    ))
-
-(noir/defpage "/zillow/" []
-(slurp "/Users/jeikens/karma-golf/resources/public/main.html")
-  )
-
-  
