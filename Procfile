@@ -1,1 +1,1 @@
-web: java $JVM_OPTS -cp target/karma-golf.jar -m karma-golf.server
+web: java $JVM_OPTS -cp target/helloworld-standalone.jar clojure.main -m hello.world $PORT
