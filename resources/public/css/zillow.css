@@ -1,3 +1,8 @@
+/* 
+Zillow Exercise #1
+John Eikens 8-7-13
+*/
+
 #col-left{
     background-color:#CBA987;
 }
@@ -7,12 +12,10 @@
 .col{
     float:left;
     }
+
 @media (min-width: 720px){
-    #col-left{
-        width:170px;
-    }
-    #col-center
-    {
+    #col-left{ width:170px;}
+    #col-center{
         max-width:inherit;
     }
     #center-container
@@ -25,7 +28,6 @@
     {
         width:200px
     }
-
     .col{
         height: 100%;
         display:inline-block;

@@ -39,7 +39,5 @@ ipsum dolor sit amet...'
       ]
 
      ]
-     [:div.piece1    
-      ]
     ]
    ))

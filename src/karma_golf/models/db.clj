@@ -2,6 +2,7 @@
   (:require [clojure.data.json :as json]
             [monger.core :as mg]
             [monger.collection :as coll]
+            [monger.conversion :as conv]
             )
   (:use karma-golf.models.utils)
   )

@@ -47,15 +47,15 @@ width: 420px;
 color: #FFFFFF;
 
 }
-.piece1{
-position:fixed;
+.piece{
 background-image: url("/img/piece2.gif");
-background-size:100%
-width: 44px;
-height: 44px;
-border-radius: 5px;
-margin: 100px 100px;
+background-size:100%;
 opacity: 0.8;
+width:44px;
+height:44px;
+margin: 1px 1px;
+border-radius: 5px;
+background-size:contain;
 }
 #comment{
 margin: 20px 20px 20px 20px;
@@ -75,5 +75,5 @@ border-color: #00DDFF;
 margin: 1px 1px;
 border-radius: 5px;
 background-size:contain;
-background-color: #000;
+background-color: #111;
 }

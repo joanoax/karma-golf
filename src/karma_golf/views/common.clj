@@ -15,9 +15,11 @@
                (include-css "/css/reset.css")
                (include-css "/css/bootstrap.css")
                (include-css "/css/main.css")
-               (include-js "lib/angular/angular.js")
-               (include-js "lib/underscore-min.js")
-               (include-js "/js/controllers.js")
+               (include-js "/js/underscore-min.js")
+               (include-js "//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")
+               (include-js "/js/piece.js")
+               (include-js "/js/key.js")
+               (include-js "/js/main.js")
                ]
               [:body
                [:div#content.row {:ng-controller "gridCtrl"}
