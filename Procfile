@@ -1,1 +1,1 @@
-web: java $JVM_OPTS -cp target/karma-golf.jar clojure.main -m server.main
+web: java $JVM_OPTS -cp target/karma-golf.jar -m karma-golf.server.main
