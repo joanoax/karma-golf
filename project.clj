@@ -7,5 +7,7 @@
                  [org.clojure/data.json "0.2.2"]
                  [com.novemberain/monger "1.6.0"]
                  ]
-  :main karma-golf.server)
+  :main karma-golf.server
+  :uberjar-name "karmagarden-standalone.jar"
+  )
 
