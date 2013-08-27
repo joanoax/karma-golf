@@ -5,7 +5,7 @@
   
 
 
-(def comment-maps (atom []))
+;(def comment-maps (atom []))
 (defn key-tree
   "Display the keys of a nested map cleanly."
   ([map] (key-tree map 0))
@@ -20,9 +20,11 @@
           )
         )))
 
-(defn from-reddit [path & arguments]
-    (json/read-json (slurp (str "http://api.reddit.com" path ".json"))) 
-  )
+(defn from-reddit [path arguments]
+  (json/read-json
+   (slurp
+    (str "http://api.reddit.com" path ".json" arguments)
+    )))
 
 
 (defn comment-links [listing-map]
@@ -49,10 +51,13 @@
 ;code snippets from the repl 
 
 
-(defn populate-comment-maps [subreddit]
-  (let [ linx (comment-links (from-reddit subreddit))]
+(defn comment-maps [subreddit]
+  (let [ mapz (atom [])
+       linx (comment-links (from-reddit subreddit "?sort=top&t=day"))]
        (doseq [link linx]
-         (swap! comment-maps conj (from-reddit link))
+         (swap! mapz conj (from-reddit link ""))
          (println "Downloaded  " link)
-         ))
+         )
+       @mapz
+       )
   )

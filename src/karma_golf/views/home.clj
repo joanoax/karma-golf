@@ -2,8 +2,11 @@
 (ns karma-golf.views.home
   (:require [karma-golf.views.common :as common]
             [karma-golf.models.utils :as utils]
+            [karma-golf.models.db :as db]
+            [karma-golf.models.game :as game]
             [monger.core :as mg]
             [noir.core :as noir]
+            [noir.session :as session]
             [clojure.data.json :as json]
             )
   )
@@ -23,21 +26,67 @@ ipsum dolor sit amet...'
 ")
 
 (def grid-size [15 8])
+(def subreds { "/r/askreddit" "diamonds"
+               "/r/gonewild" "hearts"
+               "/r/science" "clubs"
+               "/r/movies" "spades"
+               "/r/trees" "reds"
+               })
+
+(def games (atom {}) )
 
 
 (noir/defpage "/" []
+  (session/put! :user-id (str (java.util.UUID/randomUUID)))
+  (session/put! :game (game/build-game (keys subreds)))
   (common/layout
-   [:div#title.col-lg-4
-    ]
-   [:div#play-golf.col-lg-8.col-lg-offset-4
-    [:div#game-main
-     [:table {:style "margin:auto;"}
-      (repeat (first grid-size)
-              [:tr
-               (repeat (second grid-size) [:td [:div.cell]])
-               ])
+   [:div.bg1]
+   [:div.bg2]
+   [:div.bg3]
+   [:div.bg4
+    [:div.col-lg-4.bg5
+     [:div#title
+      [:h1 "KARMAGARDEN"]
+      [:h3 "Legend"]
+      (for [[redi suit] subreds]
+        [:div.key
+         [:span {:class (str "show-piece " suit)}]
+         redi]
+        )
+      ]]
+    [:div#play-golf.col-lg-4.bg5
+     [:div#game-main
+      [:table {:style "margin:auto;"}
+       (repeat (first grid-size)
+               [:tr
+                (repeat (second grid-size) [:td [:div.cell]])
+                ])]
       ]
-
      ]
-    ]
-   ))
+    [:div#convo.col-lg-4.bg5
+     [:div#convo-top
+      [:div.contents
+       "The Tao is silent."
+       ] 
+      ]
+     [:div#convo-bottom 
+      [:div.contents]] 
+     ]
+    [:div#current-text]
+    [:div#uuid.hidden (session/get :user-id)]]
+   [:div.bg6]
+   )
+
+  )
+
+(noir/defpage "/piece/" {:keys [id]}
+  (let [ game (session/get :game)
+        thread-key (rand-nth (keys (:threads game)))
+        [comment new-thread] (game/next-comment (get (:threads game) thread-key))
+        new-threads (assoc (:threads game) thread-key new-thread)
+        new-game (assoc game :threads new-threads)
+        ]
+    (session/put! :game new-game)
+    (json/write-str (dissoc (assoc comment :type (get subreds thread-key) :count (count new-thread)) :replies))
+    )
+  )

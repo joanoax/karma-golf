@@ -8,3 +8,33 @@
   )
 
 (def db-uri "mongodb://jeikens:wowzazepos@ds037468.mongolab.com:37468/heroku_app17301729")
+
+(defn jack-in! []
+  (mg/connect-via-uri! db-uri)
+  )
+
+(defn mapwrap [vec]
+  {:comments vec}
+  )
+
+(defn download-to-db
+  "Downloaded all posts on subreddit front page, cleans them, and loads them into the database."
+  [subreddit]
+  (let [comms (comment-maps subreddit)
+        cleaned (map mapwrap (map clean-comments comms))    
+        ]
+      (coll/insert-batch subreddit cleaned)
+      )
+  )
+
+
+(defn get-random-thread [subreddit]
+  (:comments
+   (conv/from-db-object
+    (rand-nth
+     (seq
+      (coll/find subreddit)
+      )) true))
+  )
+ 
+

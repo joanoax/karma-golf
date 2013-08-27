@@ -135,7 +135,7 @@ Piece.prototype.drop = function(){
 Piece.prototype.moveDown = function(){
     this.y += 1;
 
-    if(Game.pieceAt(this.x,this.y+1) || this.y >= Game.gridHeight-1 ){
+    if(){
         Game.place();
         }
 };

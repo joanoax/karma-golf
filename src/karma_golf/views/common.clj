@@ -3,7 +3,7 @@
         [hiccup.page :only [include-css include-js  html5]]))
 
 (defpartial angular[& content]
-  [:html {:ng-app ""}
+  [:html
    content
    ]
   )
@@ -22,6 +22,6 @@
                (include-js "/js/main.js")
                ]
               [:body
-               [:div#content.row {:ng-controller "gridCtrl"}
+               [:div#content.row
                 content]]))
 
