@@ -24,21 +24,21 @@ Piece.getCell = function(p){
     return piece;
 };
 
-Piece.getTop = function(col){
-    var top = new Piece(0,15,"",0,0,0);
-    var score = 0;
-    for (var i=0; i < Game.entities.length; i++) {
-        var curr = Game.entities[i];
-        if(!curr.falling && curr.x == col && curr.y < top.y){
-            top = Game.entities[i];}}
-    return top;
-};
 
 
 /////////////////////
 Piece.prototype.isAdjacent = function(toPiece){
     return Math.abs(toPiece.x-this.x) + Math.abs(toPiece.y-this.y) == 1;
 };
+
+Piece.prototype.getTop = function(){
+    var top = new Piece(0,15,"",0,0,0);
+    for (var i=0; i < Game.entities.length; i++) {
+        var curr = Game.entities[i];
+        if(!curr.falling && curr.x == this.x  && curr.y < top.y && curr.y > this.y){
+            top = Game.entities[i];}}
+    return top;
+}
 
 Piece.prototype.getAllConnected = function(){
     var curtype = this.type;
@@ -114,29 +114,41 @@ Piece.prototype.update = function(){
 //    console.log("Piece X:" + this.x + "Piece Y" + this.y);
     };
 
+
 Piece.prototype.moveLeft = function (){
-    if(this.x >= 1)
+    if(this.x >= 1  && !Game.pieceAt(this.x-1,this.y)){
         this.x -=1;
     Game.bgShift(this.x);
+        }
+        if(Game.pieceAt(this.x,this.y+1) || this.y >= Game.gridHeight-1 ){
+        Game.place();
+        }
     Game.updateComments();
 };
 
+
 Piece.prototype.moveRight = function(){
-    if(this.x < Game.gridWidth - 1)
-            this.x += 1;
-        Game.bgShift(this.x);
+    if(this.x < Game.gridWidth - 1 && !Game.pieceAt(this.x+1,this.y)){
+        this.x += 1;
+        Game.bgShift(this.x);}
+        if(Game.pieceAt(this.x,this.y+1) || this.y >= Game.gridHeight-1 ){
+        Game.place();
+        }  
     Game.updateComments();
 };
 
 Piece.prototype.drop = function(){
-    this.y = Piece.getTop(this.x).y - 1;
+    this.y = this.getTop().y - 1;
     Game.place();
 };
 Piece.prototype.moveDown = function(){
-    this.y += 1;
-
-    if(Game.pieceAt(this.x,this.y+1) || this.y >= Game.gridHeight-1 ){
+    
+    if(Game.pieceAt(this.x,this.y+1) || this.y >= Game.gridHeight - 1){
         Game.place();
         }
+    else{
+            this.y += 1;
+        }
+
 };
 

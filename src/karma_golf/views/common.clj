@@ -19,6 +19,7 @@
                (include-js "//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")
                (include-js "/js/piece.js")
                (include-js "/js/key.js")
+               (include-js "/js/set.js")
                (include-js "/js/main.js")
                ]
               [:body

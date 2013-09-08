@@ -18,14 +18,18 @@ Game.loadPiece = function(){
 };
 
 Game.remove = function(pieces){
+    var moveScore = 1;
     for(var p in pieces){
+        moveScore += pieces[p].score;
         $(Piece.getCell(pieces[p])).html("");
             Game.entities = _.filter(Game.entities,function(piece){return piece.x != pieces[p].x || piece.y != pieces[p].y;});
             }
+    Game.score += moveScore;
+    $("#score").html(Game.score);
 };
 
 Game.pieceAt = function(pcx,pcy){
-    return _.filter(Game.entities,function(p){p.x == pcx && p.y == pcy}).length > 0;
+    return _.filter(Game.entities,function(p){return p.x == pcx && p.y == pcy}).length > 0;
 };
 
 Game.place = function()  {
@@ -74,7 +78,7 @@ Game.bgShift = function(col){
 
 Game.updateComments = function(){
     $("#convo-top .contents").html(Game.cPiece.text);
-    $("#convo-bottom .contents").html(Piece.getTop(Game.cPiece.x).text);};
+    $("#convo-bottom .contents").html(Game.cPiece.getTop().text);};
 
 Game.draw = function() {
 $(".piece").attr('class','cell');

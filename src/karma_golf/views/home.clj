@@ -53,6 +53,7 @@ ipsum dolor sit amet...'
          [:span {:class (str "show-piece " suit)}]
          redi]
         )
+      [:p "SCORE -- " [:span#score "0"]]
       ]]
     [:div#play-golf.col-lg-4.bg5
      [:div#game-main

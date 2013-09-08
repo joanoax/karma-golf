@@ -1,0 +1,4 @@
+function Set(pieces){
+    this.ps = pieces;
+}
+
