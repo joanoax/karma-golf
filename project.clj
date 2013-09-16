@@ -6,6 +6,7 @@
                  [noir "1.3.0-beta3"]
                  [org.clojure/data.json "0.2.2"]
                  [com.novemberain/monger "1.6.0"]
+                 [criterium "0.4.2"]
                  ]
   :main karma-golf.server
   :uberjar-name "karmagarden-standalone.jar"

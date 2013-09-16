@@ -1,5 +1,6 @@
 (ns karma-golf.models.game
   (:require [karma-golf.models.db :as db]
+            [criterium.core :as bench]
             )
   )
 

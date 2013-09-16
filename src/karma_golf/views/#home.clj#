@@ -40,7 +40,42 @@ ipsum dolor sit amet...'
   (session/put! :user-id (str (java.util.UUID/randomUUID)))
   (session/put! :game (game/build-game (keys subreds)))
   (common/layout
-   [:]
+   [:div.bg1]
+   [:div.bg2]
+   [:div.bg3]
+   [:div.bg4
+    [:div.col-lg-4.bg5
+     [:div#title
+      [:h1 "KARMAGARDEN"]
+      [:h3 "Legend"]
+      (for [[redi suit] subreds]
+        [:div.key
+         [:span {:class (str "show-piece " suit)}]
+         redi]
+        )
+      [:p "SCORE -- " [:span#score "0"]]
+      ]]
+    [:div#play-golf.col-lg-4.bg5
+     [:div#game-main
+      [:table {:style "margin:auto;"}
+       (repeat (first grid-size)
+               [:tr
+                (repeat (second grid-size) [:td [:div.cell]])
+                ])]
+      ]
+     ]
+    [:div#convo.col-lg-4.bg5
+     [:div#convo-top
+      [:div.contents
+       "The Tao is silent."
+       ] 
+      ]
+     [:div#convo-bottom 
+      [:div.contents]] 
+     ]
+    [:div#current-text]
+    [:div#uuid.hidden (session/get :user-id)]]
+   [:div.bg6]
    )
 
   )
