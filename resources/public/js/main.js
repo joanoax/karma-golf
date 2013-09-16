@@ -72,7 +72,7 @@ Game.update = function() {
 
 Game.bgShift = function(col){
     for(var ix = 1; ix <= 7; ix++){
-        var paral = (Game.gridWidth - col) * ix  - 40;
+        var paral = (Game.gridWidth - col) * ix * 2  - 20;
         $(".bg" + ix).animate({left: paral+ "px"},150, "linear");
     }};
 
@@ -106,6 +106,8 @@ Game.initialize = function() {
   window.addEventListener('keydown',Game.keydownHandler, false);
   Game._pieceIntervalID = window.setInterval(function(){Game.cPiece.moveDown()},Game.speed);
 };
+
+
 
 Game.run = (function() {
   var loops = 0, skipTicks = 1000 / Game.fps,

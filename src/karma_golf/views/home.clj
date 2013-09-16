@@ -26,36 +26,38 @@ ipsum dolor sit amet...'
 ")
 
 (def grid-size [15 8])
-(def subreds { "/r/askreddit" "diamonds"
-               "/r/gonewild" "hearts"
-               "/r/science" "clubs"
-               "/r/movies" "spades"
-               "/r/trees" "reds"
-               })
+
 
 (def games (atom {}) )
 
-
 (noir/defpage "/" []
+  (common/layout-3D
+   [:div#container ""]
+   )
+  )
+
+
+(noir/defpage "/old" []
   (session/put! :user-id (str (java.util.UUID/randomUUID)))
-  (session/put! :game (game/build-game (keys subreds)))
+  (session/put! :game (game/build-game (keys game/subreds)))
   (common/layout
    [:div.bg1]
    [:div.bg2]
    [:div.bg3]
-   [:div.bg4
-    [:div.col-lg-4.bg5
+   [:div.bg4]
+   [:div.bg-game
+    [:div.col-lg-4.bg-5
      [:div#title
       [:h1 "KARMAGARDEN"]
       [:h3 "Legend"]
-      (for [[redi suit] subreds]
+      (for [[redi suit] game/subreds]
         [:div.key
          [:span {:class (str "show-piece " suit)}]
          redi]
         )
       [:p "SCORE -- " [:span#score "0"]]
       ]]
-    [:div#play-golf.col-lg-4.bg5
+    [:div#play-golf.col-lg-4.bg-5
      [:div#game-main
       [:table {:style "margin:auto;"}
        (repeat (first grid-size)
@@ -64,7 +66,7 @@ ipsum dolor sit amet...'
                 ])]
       ]
      ]
-    [:div#convo.col-lg-4.bg5
+    [:div#convo.col-lg-4.bg-5
      [:div#convo-top
       [:div.contents
        "The Tao is silent."
@@ -75,7 +77,6 @@ ipsum dolor sit amet...'
      ]
     [:div#current-text]
     [:div#uuid.hidden (session/get :user-id)]]
-   [:div.bg6]
    )
 
   )
@@ -88,6 +89,11 @@ ipsum dolor sit amet...'
         new-game (assoc game :threads new-threads)
         ]
     (session/put! :game new-game)
-    (json/write-str (dissoc (assoc comment :type (get subreds thread-key) :count (count new-thread)) :replies))
+    (json/write-str (dissoc
+                     (assoc comment :type (get game/subreds thread-key)
+                            :count (count new-thread)
+                            )
+                     :replies))
+    
     )
   )
