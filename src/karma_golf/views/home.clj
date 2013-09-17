@@ -33,6 +33,17 @@ ipsum dolor sit amet...'
 (noir/defpage "/" []
   (common/layout-3D
    [:div#container ""]
+
+     [:div#title
+      [:h1 "KARMAGARDEN"]
+      [:h3 "Legend"]
+      (for [[redi suit] game/subreds]
+        [:div.key
+         [:span {:class (str "show-piece " suit)}]
+         redi]
+        )
+      [:p "SCORE -- " [:span#score "0"]]
+      ]
    )
   )
 
