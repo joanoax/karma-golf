@@ -12,8 +12,13 @@ Cursor.init = function(img_path){
                                                  opacity: 1,
                                                 // blending: "AdditiveBlending"
                                                 }));
+
     Cursor.mesh.position.set(0,0,-150);
+   //  Cursor.light.target = Cursor.mesh.position;
     Cursor.mesh.geometry.dynamic = true; 
+
+       
+  //  KGDN.scene.add(Cursor.light);
     window.onmousemove = Cursor.update;
 
 };
@@ -30,12 +35,14 @@ Cursor.update = function(event){
     dir = vector.sub(KGDN.camera.position).normalize();
     ray = new THREE.Raycaster(KGDN.camera.position, dir );
     distance = - dir.clone().multiplyScalar(KGDN.tileGrid.position.z/dir.z).length();
-    console.log(distance);
+    //console.log(distance);
     var newVec = KGDN.camera.position.clone().add(dir.multiplyScalar(distance)); 
     newVec.z = KGDN.tileGrid.position.z;
-    newVec.x = Math.round(newVec.x /6.6)*6.6;
-    newVec.y = Math.round(newVec.y /6.6)*6.6;
-    Cursor.mesh.position.set(newVec.x,newVec.y,newVec.z);
+    Cursor.gridX = -Math.round(( KGDN.tileGrid.position.x - newVec.x - 50) /KGDN.pieceSize);
+    Cursor.gridY = - Math.round((KGDN.tileGrid.position.y + newVec.y  - 50) /KGDN.pieceSize);
+    Cursor.gridX = Math.min(Math.max(0, Cursor.gridX) , KGDN.grid[0]-1);
+     Cursor.gridY = Math.min(Math.max(0, Cursor.gridY) , KGDN.grid[1]-1);
+    KGDN.placeOnGrid(Cursor.mesh,Cursor.gridX,Cursor.gridY,KGDN.tileGrid.position.z);
     KGDN.camera.position.x = (event.clientX - window.innerWidth/2)/60;
     KGDN.camera.position.y = -(event.clientY - window.innerHeight/2) /60;
 };

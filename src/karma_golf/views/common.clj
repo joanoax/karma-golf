@@ -33,7 +33,8 @@
     (include-js "//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")
     (include-js "//cdnjs.cloudflare.com/ajax/libs/three.js/r58/three.min.js")
     (include-js "/js/cat.js")
-    #_(include-js "/js/cursor.js")
+    (include-js "/js/cursor.js")
+    (include-js "/js/piece.js")
     (include-js "/js/karmagarden.js")]
    [:body
     [:div#content.row

@@ -89,6 +89,7 @@ KGDN.init = function (){
     pl.position.set(-100,0,-150);
     KGDN.scene.add(pl);
 
+
     //Game-board
     KGDN.drawGrid(40,0,-150);
     
