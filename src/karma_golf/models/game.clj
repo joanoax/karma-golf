@@ -38,7 +38,9 @@
         flower  (dissoc
                  (assoc comment :subreddit subreddit
                         :remaining (count (:comments new-thread))
-                        :thread-title (:title new-thread))
+                        :thread-title (:title new-thread)
+                        :text (:body-html comment)
+                        )
                             :replies)
         new-threads (assoc threads ind new-thread)
         new-game (assoc-in game [:threads subreddit] new-threads)
@@ -49,7 +51,8 @@
 
 (defn get-stem [game subreddit]
   (let [thread (db/get-random-thread subreddit)
-        stem (select-keys thread [:ups :downs :title :subreddit])
+        pre-stem (select-keys thread [:ups :downs :title :subreddit])
+        stem (dissoc (assoc pre-stem :text (:title pre-stem)) :body-html)
         new-threads (conj (get-in game [:threads subreddit]) thread)
         new-game (assoc-in game [:threads subreddit] new-threads)
         ]

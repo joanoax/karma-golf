@@ -13,7 +13,7 @@ Cursor.init = function(img_path){
                                                 // blending: "AdditiveBlending"
                                                 }));
 
-    Cursor.mesh.position.set(0,0,-150);
+    Cursor.mesh.position.set(0,0,KGDN.tileGrid.position.z + 10);
    //  Cursor.light.target = Cursor.mesh.position;
     Cursor.mesh.geometry.dynamic = true; 
 
@@ -42,7 +42,9 @@ Cursor.update = function(event){
     Cursor.gridY = - Math.round((KGDN.tileGrid.position.y + newVec.y  - 50) /KGDN.pieceSize);
     Cursor.gridX = Math.min(Math.max(0, Cursor.gridX) , KGDN.grid[0]-1);
      Cursor.gridY = Math.min(Math.max(0, Cursor.gridY) , KGDN.grid[1]-1);
-    KGDN.placeOnGrid(Cursor.mesh,Cursor.gridX,Cursor.gridY,KGDN.tileGrid.position.z);
+    KGDN.placeOnGrid(Cursor.mesh,Cursor.gridX,Cursor.gridY,KGDN.tileGrid.position.z + 2);
+    KGDN.placeOnGrid(KGDN.cursLight,Cursor.gridX,Cursor.gridY,KGDN.tileGrid.position.z + 30);
+    console.log(KGDN.cursLight.position.x + " " + KGDN.cursLight.position.y);
     KGDN.camera.position.x = (event.clientX - window.innerWidth/2)/60;
     KGDN.camera.position.y = -(event.clientY - window.innerHeight/2) /60;
 };

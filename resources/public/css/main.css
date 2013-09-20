@@ -62,8 +62,12 @@ margin-top: auto;
 margin-bottom:auto;
 margin-left:50px;
 }
-#title{ background-color: rgba(128,128,128,0.5);
-        
+#title{ 
+    left: 0px;
+    top:0px;
+    background-color: rgba(128,128,128,0.0);
+        position: absolute;
+        z-index: 2;
         background-size:contain;
         width: 100%;
         height:100%;

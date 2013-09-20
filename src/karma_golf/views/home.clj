@@ -41,7 +41,7 @@ ipsum dolor sit amet...'
    [:div#uuid.hidden (session/get :user-id)]
    [:div#container ""]
 
-     #_[:div#title
+     [:div#title
       [:h1 "KARMAGARDEN"]
       [:h3 "Legend"]
       (for [[redi suit] game/subreds]

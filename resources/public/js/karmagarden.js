@@ -1,21 +1,12 @@
 KGDN = {};
 KGDN.fps = 50;
 KGDN.bgLayers = [];
-KGDN.bgZs = [-250,-180,-120];
+KGDN.bgZs = [-250,-220,-120];
 KGDN.camOffset = [0.0,10.0];
+KGDN.velocity = 3;
 KGDN.grid = [15, 15];
 KGDN.pieceSize = 6.6;
-
-KGDN.cats = [];
-KGDN.moveCats = function(){
-    var scalar = ( KGDN.cats[0].mesh.position.z / Cat.velocity);
-    KGDN.cats[0].mesh.position.x += -(KGDN.cats[0].mesh.position.x) / scalar;
-    KGDN.cats[0].mesh.position.y += -(KGDN.cats[0].mesh.position.y) / scalar;
-    for(var i = 1; i < KGDN.cats.length; i++){
-            KGDN.cats[i].mesh.position.x += -(KGDN.cats[i].mesh.position.x) / scalar;
-        KGDN.cats[i].mesh.position.y += -(KGDN.cats[i].mesh.position.y) / scalar;
-        }
-};
+KGDN.subreddits = ["AskReddit", "worldnews" ,  "science" ,  "gaming" ,  "WTF" ];
 
 KGDN.drawGrid = function(xo,yo,z){
     var tileTxt = THREE.ImageUtils.loadTexture("/img/baseTile.png");
@@ -31,7 +22,6 @@ KGDN.drawGrid = function(xo,yo,z){
                 tileGrid.position.set( xo,yo,z);
                 KGDN.scene.add(tileGrid);
     KGDN.tileGrid = tileGrid;
-    
 };
 
 KGDN.placeOnGrid = function(mesh,gridX, gridY,z){
@@ -68,6 +58,12 @@ KGDN.init = function (){
     KGDN.renderer.setSize(WIDTH, HEIGHT);
     $container.append(KGDN.renderer.domElement);
 
+    KGDN.bgVecs = [];
+    KGDN.bgVecs[0] = new THREE.Vector3(50,0,-250);
+    KGDN.bgVecs[1] = new THREE.Vector3(-20,0,-150);
+    KGDN.bgVecs[2] = new THREE.Vector3(0,0,-100);
+    
+
     var bgMaterial;
     //Set up bg parallax layers.
     for(var bg = 1; bg <= 3; bg++){
@@ -77,26 +73,41 @@ KGDN.init = function (){
              opacity: 1
             });
         var bgMesh = new THREE.Mesh( new THREE.PlaneGeometry(400 - 100 * (bg -1) , 200 - 50 * (bg-1)), bgMaterial);
-        bgMesh.position.set(0,0,0);
+        bgMesh.position = KGDN.bgVecs[bg-1];
         KGDN.scene.add(bgMesh);
-        bgMesh.position.z =  KGDN.bgZs[bg-1];
+        //bgMesh.position.z =  KGDN.bgZs[bg-1];
         KGDN.bgLayers.push(bgMesh);
         }
     
-    //Static lights.
-    KGDN.scene.add(new THREE.AmbientLight(0x252222));
-   var pl = new THREE.PointLight(0x9995AA,5,300);
-    pl.position.set(-100,0,-150);
-    KGDN.scene.add(pl);
+
+ 
+
 
     //Game-board
     KGDN.drawGrid(40,0,-150);
+
+        //Static lights.
+    KGDN.scene.add(new THREE.AmbientLight(0x999999));
+    var pl = new THREE.PointLight(0x88AA99,2,100);
+    pl.position.set(KGDN.tileGrid.position.x ,KGDN.tileGrid.position.y ,-120);
+       KGDN.scene.add(pl);
+    KGDN.cursLight = pl;
     
     window.onmousedown = function(event){
-        var piece = new Piece(Cursor.gridX,Cursor.gridY,"hi",25,"WTF",false);
+        var isStem = Math.floor(Math.random() + 0.5) == 1;
+        Pieces.falling.place();
+        Pieces.falling  = new Piece(Cursor.gridX,
+                              Cursor.gridY,
+                              "hi",
+                              25,
+                              KGDN.subreddits[_.random(KGDN.subreddits.length-1)],
+                                              isStem);
         };
     Cursor.init('/img/cursor.png'); 
+    Pieces.init();
     KGDN.scene.add(Cursor.mesh);
+
+ // window.setInterval(function(){Pieces.loadPiece("AskReddit",false)}, 500);
 
 };
 
@@ -115,8 +126,20 @@ KGDN.draw = function() {
     };
   
 KGDN.update = function () {
+    if(Pieces.unplacedQueue.length < 5)
+        Pieces.loadPiece(KGDN.subreddits[_.random(KGDN.subreddits.length+1)],false);
+
+   Pieces.falling.x = Cursor.gridX;
+   Pieces.falling.y = Cursor.gridY; 
+   Pieces.falling.group.position.z += KGDN.velocity;
+   KGDN.placeOnGrid(Pieces.falling.group,Pieces.falling.x, Pieces.falling.y, Pieces.falling.group.position.z);
     
+    if(Pieces.falling.group.position.z > KGDN.tileGrid.position.z){
+        Pieces.falling.place();
+        Pieces.falling = Pieces.unplacedQueue.shift();
+        }
     };
+
 
 KGDN.run = (function() {
   var loops = 0, skipTicks = 1000 / KGDN.fps,
