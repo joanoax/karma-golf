@@ -27,13 +27,14 @@
    [:head
     [:title "K A R M A   G A R D E N"]
     (include-css "/css/reset.css")
-    (include-css "/css/main.css")
+    (include-css "/css/bootstrap.css")
+    (include-css "/css/threed.css")
     (include-js "/js/underscore-min.js")
     (include-js "//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")
     (include-js "//cdnjs.cloudflare.com/ajax/libs/three.js/r58/three.min.js")
     (include-js "/js/cat.js")
-    (include-js "/js/karmagarden.js")
-    ]
+    #_(include-js "/js/cursor.js")
+    (include-js "/js/karmagarden.js")]
    [:body
     [:div#content.row
      content]]

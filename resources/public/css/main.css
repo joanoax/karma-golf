@@ -62,8 +62,9 @@ margin-top: auto;
 margin-bottom:auto;
 margin-left:50px;
 }
-#title{ 
-        border-radius: 10px;
+#title{ background-color: rgba(128,128,128,0.5);
+        
+        background-size:contain;
         width: 100%;
         height:100%;
         margin: 0px auto;
@@ -81,7 +82,6 @@ bottom:20px;
 }
 #game-main{
 border-radius: 10px;
-background-color: rgba(0,0,0,0.5);
 //box-shadow: 0px 0px 5px 10px rgba(216,216,255,0.9);
 padding: 10px;
 font-family: "Courier New", serif;
@@ -120,7 +120,7 @@ background-size: 100%;
 height:100%;
 width:100%;
 }
-.bg-5{
+.bg-game{
 z-index:5;}
 
 .bg4{

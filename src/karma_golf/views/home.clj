@@ -31,10 +31,17 @@ ipsum dolor sit amet...'
 (def games (atom {}) )
 
 (noir/defpage "/" []
+  (session/put! :user-id (str (java.util.UUID/randomUUID)))
+  (session/put! :game (second (game/get-stem
+                               (game/build-game (keys game/subreds))
+                               "AskReddit"
+                               )))
+  
   (common/layout-3D
+   [:div#uuid.hidden (session/get :user-id)]
    [:div#container ""]
 
-     [:div#title
+     #_[:div#title
       [:h1 "KARMAGARDEN"]
       [:h3 "Legend"]
       (for [[redi suit] game/subreds]
@@ -44,53 +51,36 @@ ipsum dolor sit amet...'
         )
       [:p "SCORE -- " [:span#score "0"]]
       ]
-   )
+     )
+  
   )
 
 
-(noir/defpage "/old" []
-  (session/put! :user-id (str (java.util.UUID/randomUUID)))
-  (session/put! :game (game/build-game (keys game/subreds)))
-  (common/layout
-   [:div.bg1]
-   [:div.bg2]
-   [:div.bg3]
-   [:div.bg4]
-   [:div.bg-game
-    [:div.col-lg-4.bg-5
-     [:div#title
-      [:h1 "KARMAGARDEN"]
-      [:h3 "Legend"]
-      (for [[redi suit] game/subreds]
-        [:div.key
-         [:span {:class (str "show-piece " suit)}]
-         redi]
-        )
-      [:p "SCORE -- " [:span#score "0"]]
-      ]]
-    [:div#play-golf.col-lg-4.bg-5
-     [:div#game-main
-      [:table {:style "margin:auto;"}
-       (repeat (first grid-size)
-               [:tr
-                (repeat (second grid-size) [:td [:div.cell]])
-                ])]
-      ]
-     ]
-    [:div#convo.col-lg-4.bg-5
-     [:div#convo-top
-      [:div.contents
-       "The Tao is silent."
-       ] 
-      ]
-     [:div#convo-bottom 
-      [:div.contents]] 
-     ]
-    [:div#current-text]
-    [:div#uuid.hidden (session/get :user-id)]]
-   )
-
+(noir/defpage "/flower/:subreddit" {subreddit :subreddit}
+  (let [game (session/get :game)
+        [flower new-game] (game/get-flower game subreddit)]
+    (session/put! :game new-game)
+    (json/write-str flower)
+    )
   )
+
+(noir/defpage "/stem/:subreddit" {subreddit :subreddit}
+    (let [game (session/get :game)
+        [stem new-game] (game/get-stem game subreddit)]
+    (session/put! :game new-game)
+    (json/write-str stem)
+    )
+    )
+
+#_(noir/defpage "/kill/:subreddit/:title" {subreddit :subreddit
+                                         title :title 
+                                         }
+    (let [game (session/get :game)
+          new-game (game/kill-stem game subreddit title)]
+    (session/put! :game new-game)
+    (json/write-str stem)
+    )
+    )
 
 (noir/defpage "/piece/" {:keys [id]}
   (let [ game (session/get :game)

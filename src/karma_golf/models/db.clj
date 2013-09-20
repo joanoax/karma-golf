@@ -11,7 +11,7 @@
 
 (def db-uri "mongodb://jeikens:wowzazepos@ds037468.mongolab.com:37468/heroku_app17301729")
 (def thread-coll "threads")
-(def loaded-reddits ["science" "worldnews" "askreddit" "IAmA" "gaming" "movies" "WTF" "todayilearned"])
+(def loaded-reddits ["science" "worldnews" "askReddit" "IAmA" "gaming" "movies" "WTF" "todayilearned"])
 
 (defn jack-in! []
   (mg/connect-via-uri! db-uri)
@@ -41,5 +41,11 @@
         )
       ))
     )
+
+(defn tally-subreddits []
+  (let [mapz (coll/find-maps "threads")]
+    (doseq [map mapz]
+      (println (:subreddit map)))))
+    
 
 

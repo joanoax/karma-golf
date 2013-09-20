@@ -1,11 +1,11 @@
 
-Cat.velocity = 5;
+Cat.velocity = 3;
 
 
 function Cat(position,stem,type){
     this.mesh = new THREE.Mesh(
-        new THREE.PlaneGeometry(100,50),
-        new THREE.MeshLambertMaterial({map: THREE.ImageUtils.loadTexture("/img/convo-bottom.png"),
+        new THREE.PlaneGeometry(60,60),
+        new THREE.MeshLambertMaterial({map: THREE.ImageUtils.loadTexture("/img/cat" + _.random(1,4) + ".png"),
                                        transparent: true,
                                        opacity: 1}));
 

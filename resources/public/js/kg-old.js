@@ -6,59 +6,35 @@ Cursor.init = function(img_path){
     Cursor.gridY = -9;
     Cursor.txt =  THREE.ImageUtils.loadTexture(img_path);
     Cursor.mesh =  new THREE.Mesh(
-                    new THREE.PlaneGeometry(KGDN.pieceSize, KGDN.pieceSize,0),
+                    new THREE.PlaneGeometry(20,20,0),
                     new THREE.MeshBasicMaterial({map: Cursor.txt,
                                                  transparent: true,
                                                  opacity: 1,
                                                 // blending: "AdditiveBlending"
                                                 }));
-    Cursor.mesh.position.set(0,0,-150);
+    Cursor.mesh.position.set(0,0,-375);
     Cursor.mesh.geometry.dynamic = true; 
-    window.onmousemove = Cursor.update;
+  window.addEventListener('mouseMove', Cursor.update);
 
 };
 
 var curscount = 0;
 Cursor.update = function(event){
+                KGDN.camera.position.x = -50 + event.clientX/12;
+    KGDN.camera.position.y = 50 - event.clientY/12;
+
+    //console.log(curscount);
     Cursor.x = event.clientX;
     Cursor.y = event.clientY;
-      var vector = new THREE.Vector3(
-        (-event.clientX / window.innerWidth ) * 2 + 1,
-          (event.clientY / window.innerHeight ) * 2 -1,
-        0.5 );
-    KGDN.projector.unprojectVector(vector, KGDN.camera);
-    dir = vector.sub(KGDN.camera.position).normalize();
-    ray = new THREE.Raycaster(KGDN.camera.position, dir );
-    distance = - dir.clone().multiplyScalar(KGDN.tileGrid.position.z/dir.z).length();
-    console.log(distance);
-    var newVec = KGDN.camera.position.clone().add(dir.multiplyScalar(distance)); 
-    newVec.z = KGDN.tileGrid.position.z;
-    newVec.x = Math.round(newVec.x /6.6)*6.6;
-    newVec.y = Math.round(newVec.y /6.6)*6.6;
-    Cursor.mesh.position.set(newVec.x,newVec.y,newVec.z);
-    KGDN.camera.position.x = (event.clientX - window.innerWidth/2)/60;
-    KGDN.camera.position.y = -(event.clientY - window.innerHeight/2) /60;
+
 };
 
-// requestAnim shim layer by Paul Irish
-    window.requestAnimFrame = (function(){
-      return  window.requestAnimationFrame       || 
-              window.webkitRequestAnimationFrame || 
-              window.mozRequestAnimationFrame    || 
-              window.oRequestAnimationFrame      || 
-              window.msRequestAnimationFrame     || 
-              function(/* function */ callback, /* DOMElement */ element){
-                window.setTimeout(callback, 1000 / 60);
-              };
-    })();
 
 KGDN = {};
 KGDN.fps = 50;
 KGDN.bgLayers = [];
-KGDN.bgZs = [-250,-180,-120];
-KGDN.camOffset = [0.0,10.0];
+KGDN.bgZs = [-600,-450,-300];
 KGDN.grid = [15, 15];
-KGDN.pieceSize = 6.6;
 
 KGDN.cats = [];
 KGDN.moveCats = function(){
@@ -71,22 +47,7 @@ KGDN.moveCats = function(){
         }
 };
 
-KGDN.drawGrid = function(xo,yo,z){
-    var tileTxt = THREE.ImageUtils.loadTexture("/img/baseTile.png");
-    tileTxt.wrapS = tileTxt.wrapT = THREE.RepeatWrapping;
-    tileTxt.repeat.set( KGDN.grid[0], KGDN.grid[1] );
-                var tileGrid = new THREE.Mesh(
-                    new THREE.PlaneGeometry(100,100,0),
-                    new THREE.MeshBasicMaterial({map: tileTxt,
-                                                 transparent: true,
-                                                 opacity: 0.15
-                                                 ,blending: "AdditiveBlending"
-                                                }));
-                tileGrid.position.set( xo,yo,z);
-                KGDN.scene.add(tileGrid);
-    KGDN.tileGrid = tileGrid;
-    
-};
+
 
 
 KGDN.init = function (){
@@ -98,7 +59,7 @@ KGDN.init = function (){
     var VIEW_ANGLE = 40,
     ASPECT = WIDTH / HEIGHT,
     NEAR = 0.1,
-    FAR = 5000;
+    FAR = 1000;
 
     // get the DOM element to attach to
     // - assume we've got jQuery to hand
@@ -108,33 +69,47 @@ KGDN.init = function (){
     // and a scene
     KGDN.renderer = new THREE.WebGLRenderer();
     KGDN.camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
-    //KGDN.camera.position.z = 300;
     KGDN.scene = new THREE.Scene();
-    
-    // add the camera to the scene
+
+    KGDN.camera.position.x = 20;
+    KGDN.camera.position.z = 40;
+    // add the KGDN.camera to the scene
     KGDN.scene.add(KGDN.camera);
     KGDN.renderer.setSize(WIDTH, HEIGHT);
     $container.append(KGDN.renderer.domElement);
 
+
+
+    //Setup up fullscreen bg image.
+    KGDN.bgScene = new THREE.Scene();
+    KGDN.bgCam = new THREE.Camera();
+
+    var bg = new THREE.Mesh(
+        new THREE.PlaneGeometry(2, 2),
+        new THREE.MeshBasicMaterial({map: THREE.ImageUtils.loadTexture("/img/space-bg.jpg")})
+    );
+    bg.material.depthTest = false;
+    bg.material.depthWrite = false;
+        KGDN.bgScene.add(KGDN.bgCam);
+    KGDN.bgScene.add(bg);
     var bgMaterial;
     //Set up bg parallax layers.
     for(var bg = 1; bg <= 3; bg++){
         if(bg == 3){
-            bgMaterial = new THREE.MeshLambertMaterial(
+                 bgMaterial = new THREE.MeshBasicMaterial(
             {map: THREE.ImageUtils.loadTexture("/img/space-bg" + bg + ".png"),
              transparent: true,
              opacity: 1
             });}
             else{
-                        bgMaterial = new THREE.MeshLambertMaterial(
+                        bgMaterial = new THREE.MeshBasicMaterial(
             {map: THREE.ImageUtils.loadTexture("/img/space-bg" + bg + ".png"),
              transparent: true,
              opacity: 1
             });}
     
-       
-        var bgMesh = new THREE.Mesh( new THREE.PlaneGeometry(400 - 100 * (bg -1) , 200 - 50 * (bg-1)), bgMaterial);
-        bgMesh.position.set(0,0,0);
+        var scale = 1 - 0.3 * (bg - 2);
+        var bgMesh = new THREE.Mesh( new THREE.PlaneGeometry(800 *scale,600* scale,0), bgMaterial);
         KGDN.scene.add(bgMesh);
         bgMesh.position.z =  KGDN.bgZs[bg-1];
         KGDN.bgLayers.push(bgMesh);
@@ -142,15 +117,16 @@ KGDN.init = function (){
     
     //Static lights.
     KGDN.scene.add(new THREE.AmbientLight(0x252222));
-   var pl = new THREE.PointLight(0x9995AA,5,300);
-    pl.position.set(-100,0,-150);
+    var pl = new THREE.PointLight(0x9995AA,5,150);
+    pl.position.set(-100,0,-350);
     KGDN.scene.add(pl);
 
     //Game-board
-    KGDN.drawGrid(40,0,-150);
+    KGDN.drawGrid(40,40,-375);
     
     Cursor.init('/img/cursor.png'); 
     KGDN.scene.add(Cursor.mesh);
+
     //KGDN.draw();
    ///cats. 
   // setInterval(function (){ KGDN.cats.push(new Cat(new THREE.Vector3(_.random(-100,100),_.random(-100,100),-1000), 0, 0))} , 2000);
@@ -162,20 +138,33 @@ KGDN.init = function (){
 KGDN.keydownHandler =  function(event) {
   switch (event.keyCode) {
     case 38: //Up 
-      KGDN.camera.position.z += 10;
+      KGDN.camera.position.z += 5;
       break;
     case 40: // Down 
-      KGDN.camera.position.z -= 10; break;
+      KGDN.camera.position.z -= 5; break;
   }};
 
 KGDN.draw = function() {
+      vector = new THREE.Vector3(
+        ( Cursor.x / window.innerWidth ) * 2 - 1,
+          -  ( Cursor.y / window.innerHeight ) * 2 + 1,
+        0.5 );
+    KGDN.projector.unprojectVector(vector, KGDN.camera);
+    dir = vector.sub(KGDN.camera.position).normalize();
+    ray = new THREE.Raycaster(KGDN.camera.position, dir );
+    distance =  KGDN.tileGrid.position.z - KGDN.camera.position.z;
+    //console.log(vector + " " + dir + " " + ray + " " + distance);
+    newVec = KGDN.camera.position.clone().add(dir.multiplyScalar(distance)); 
+    newVec.z = KGDN.tileGrid.position.z;
+       newVec.x = Math.round(newVec.x/20)*20;
+    newVec.y = Math.round(newVec.y/20)*20;
+    console.log(newVec.x + " " + newVec.y + " " + newVec.z);
+    Cursor.mesh.position.z = newVec.z;
 
         // draw!
-  
-//   KGDN.renderer.clear();
-  //  KGDN.renderer.render(KGDN.bgScene, KGDN.bgCam);
-    requestAnimFrame(KGDN.draw);
-    
+   KGDN.renderer.autoClear = false;
+   KGDN.renderer.clear();
+    KGDN.renderer.render(KGDN.bgScene, KGDN.bgCam);
     KGDN.renderer.render(KGDN.scene, KGDN.camera);
     };
   
@@ -197,7 +186,7 @@ KGDN.run = (function() {
       loops++;
     }
     
-  //  KGDN.draw();
+    KGDN.draw();
   };
 })();
 
@@ -205,6 +194,5 @@ KGDN.run = (function() {
 $(document).ready(function(){
     // Start the game loop
     KGDN.init();
-    KGDN.draw();
     KGDN._intervalId = setInterval(KGDN.run, 0);
 });

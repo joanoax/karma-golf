@@ -1,3 +1,7 @@
+
+
+
+
 function Piece(x,y,text,score,stem,sub){
     this.x = x;
     this.y = y;
@@ -7,6 +11,13 @@ function Piece(x,y,text,score,stem,sub){
     this.sub = sub;
     this.falling = true;
     this.isNew = true;
+    this.mesh = new THREE.Mesh(
+                    new THREE.PlaneGeometry(6.6,KGDN.pieceSize,0),
+                    new THREE.MeshBasicMaterial({map: Cursor.txt,
+                                                 transparent: true,
+                                                 opacity: 1,
+                                                // blending: "AdditiveBlending"
+                                                }));
 };
 Piece.prototype.print = function(){
     console.log("X: " + this.x + 
@@ -94,49 +105,12 @@ Piece.prototype.grow = function(){
     }
 };
 
-        
-/////////////////////
-    
-Piece.prototype.draw = function() {
-    piece = Piece.getCell(this);
-    $(piece).removeClass("cell");
-    $(piece).removeClass("highlight");
-    $(piece).addClass("piece");
-    if(this.falling)
-        $(piece).addClass("drop");
-    else
-        $(piece).addClass(this.type);
-    if(this.score > 4 && !this.falling)
-        $(piece).addClass("highlight");
-    };
-
+  
 
 Piece.prototype.update = function(){
 //    console.log("Piece X:" + this.x + "Piece Y" + this.y);
     };
 
-
-Piece.prototype.moveLeft = function (){
-    if(this.x >= 1  && !Game.pieceAt(this.x-1,this.y)){
-        this.x -=1;
-    Game.bgShift(this.x);
-        }
-        if(Game.pieceAt(this.x,this.y+1) || this.y >= Game.gridHeight-1 ){
-        Game.place();
-        }
-    Game.updateComments();
-};
-
-
-Piece.prototype.moveRight = function(){
-    if(this.x < Game.gridWidth - 1 && !Game.pieceAt(this.x+1,this.y)){
-        this.x += 1;
-        Game.bgShift(this.x);}
-        if(Game.pieceAt(this.x,this.y+1) || this.y >= Game.gridHeight-1 ){
-        Game.place();
-        }  
-    Game.updateComments();
-};
 
 Piece.prototype.drop = function(){
     this.y = this.getTop().y - 1;

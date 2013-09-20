@@ -13,7 +13,7 @@
 
 (defn build-game [subreddits]
   {:score 0
-   :threads (zipmap subreddits (map db/get-random-thread subreddits))
+   :threads (zipmap subreddits (repeat []))
    }
   )
 
@@ -30,6 +30,48 @@
     [comment new-thread]
     )
   )
+
+(defn get-flower [game subreddit]
+  (let [threads (get-in game [:threads subreddit])
+        ind (rand-int (count threads))
+        [comment new-thread] (next-comment (get threads ind))
+        flower  (dissoc
+                 (assoc comment :subreddit subreddit
+                        :remaining (count (:comments new-thread))
+                        :thread-title (:title new-thread))
+                            :replies)
+        new-threads (assoc threads ind new-thread)
+        new-game (assoc-in game [:threads subreddit] new-threads)
+        ]
+    [flower new-game]
+    )
+  )
+
+(defn get-stem [game subreddit]
+  (let [thread (db/get-random-thread subreddit)
+        stem (select-keys thread [:ups :downs :title :subreddit])
+        new-threads (conj (get-in game [:threads subreddit]) thread)
+        new-game (assoc-in game [:threads subreddit] new-threads)
+        ]
+    [stem new-game]
+    )
+  )
+
+(defn kill-stem [game sub thread-title]
+  (assoc-in game [:threads sub]
+            (vec (remove #(= (:title %) thread-title)
+                         (get-in game [:threads sub])
+                         )))
+  )
+
+(defn run-game [orig-game]
+  (loop [game orig-game x 10]
+    (if (> 0 x)
+      (recur (second (get-flower game "AskReddit"))
+             (- x 2))
+      game))
+  )
+
 
 
 
