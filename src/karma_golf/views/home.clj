@@ -32,23 +32,21 @@ ipsum dolor sit amet...'
 
 (noir/defpage "/" []
   (session/put! :user-id (str (java.util.UUID/randomUUID)))
-  (session/put! :game (second (game/get-stem
-                               (game/build-game (keys game/subreds))
-                               "AskReddit"
-                               )))
+  (session/put! :game (ref (second (game/get-stem
+                                    (game/build-game (keys game/subreds))
+                                    "AskReddit"
+                                    ))))
   
   (common/layout-3D
    [:div#uuid.hidden (session/get :user-id)]
    [:div#container ""]
 
      [:div#title
-      [:h1 "KARMAGARDEN"]
-      [:h3 "Legend"]
-      (for [[redi suit] game/subreds]
-        [:div.key
-         [:span {:class (str "show-piece " suit)}]
-         redi]
-        )
+      [:h1 "karmagarden"]
+      [:h3 "stems:"]
+      [:ul#stems]
+      [:h3 "next:"]
+      [:div#nexttext]
       [:p "SCORE -- " [:span#score "0"]]
       ]
      )
@@ -56,20 +54,25 @@ ipsum dolor sit amet...'
   )
 
 
-(noir/defpage "/flower/:subreddit" {subreddit :subreddit}
-  (let [game (session/get :game)
-        [flower new-game] (game/get-flower game subreddit)]
-    (session/put! :game new-game)
-    (json/write-str flower)
-    )
-  )
+(noir/defpage "/flower/:subreddit/:reqId" {subreddit :subreddit
+                                           req-id :reqId
+                                           }
+  (dosync
+   (let [game (session/get :game)
+         [flower new-game] (game/get-flower (deref game) subreddit)]
+     (ref-set game new-game)
+     (json/write-str flower)
+     )))
 
-(noir/defpage "/stem/:subreddit" {subreddit :subreddit}
-    (let [game (session/get :game)
-        [stem new-game] (game/get-stem game subreddit)]
-    (session/put! :game new-game)
-    (json/write-str stem)
-    )
+(noir/defpage "/stem/:subreddit/:reqId" {subreddit :subreddit
+                                            req-id :reqId
+                                         }
+  (dosync
+   (let [game (session/get :game)
+         [stem new-game] (game/get-stem (deref game) subreddit)
+         ]
+     (ref-set game new-game)
+     (json/write-str stem)))
     )
 
 #_(noir/defpage "/kill/:subreddit/:title" {subreddit :subreddit

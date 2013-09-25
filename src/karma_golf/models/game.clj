@@ -1,6 +1,7 @@
 (ns karma-golf.models.game
   (:require [karma-golf.models.db :as db]
             [criterium.core :as bnch]
+            [clojure.pprint :as pprint]
             )
   )
 
@@ -20,19 +21,23 @@
 (defn next-comment
   "The next comment from the thread, and return the comment and an updated thread vector."
   [thread]
-  (let [randthread  (shuffle (:comments thread))
-        comment (first randthread)
-        kids (:replies comment)
-        good-kids (map #(assoc % :parent-body (:body-html comment)) kids)
-        new-comms (concat (rest randthread) good-kids)
-        new-thread (assoc thread :comments new-comms)
-        ]
-    [comment new-thread]
-    )
+
+    (let [
+          randthread  (shuffle (:comments thread))
+          comment (first randthread)
+          kids (:replies comment)
+          good-kids (map #(assoc % :parent-body (:body-html comment)) kids)
+          new-comms (concat (rest randthread) good-kids)
+          new-thread (assoc thread :comments new-comms)
+          ]
+      
+      [comment new-thread]
+      )
   )
 
 (defn get-flower [game subreddit]
   (let [threads (get-in game [:threads subreddit])
+         _ (println "Count" (count threads) "Subreddit" subreddit)
         ind (rand-int (count threads))
         [comment new-thread] (next-comment (get threads ind))
         flower  (dissoc
@@ -43,6 +48,7 @@
                         )
                             :replies)
         new-threads (assoc threads ind new-thread)
+        _ (println "threadcount" (count new-threads))
         new-game (assoc-in game [:threads subreddit] new-threads)
         ]
     [flower new-game]

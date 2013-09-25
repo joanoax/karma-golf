@@ -38,13 +38,19 @@ Cursor.update = function(event){
     //console.log(distance);
     var newVec = KGDN.camera.position.clone().add(dir.multiplyScalar(distance)); 
     newVec.z = KGDN.tileGrid.position.z;
-    Cursor.gridX = -Math.round(( KGDN.tileGrid.position.x - newVec.x - 50) /KGDN.pieceSize);
-    Cursor.gridY = - Math.round((KGDN.tileGrid.position.y + newVec.y  - 50) /KGDN.pieceSize);
-    Cursor.gridX = Math.min(Math.max(0, Cursor.gridX) , KGDN.grid[0]-1);
-     Cursor.gridY = Math.min(Math.max(0, Cursor.gridY) , KGDN.grid[1]-1);
+
+    newVec.x= -Math.round(( KGDN.tileGrid.position.x - newVec.x - 50) /KGDN.pieceSize);
+    newVec.y = - Math.round((KGDN.tileGrid.position.y + newVec.y  - 50) /KGDN.pieceSize);
+
+    newVec.x = Math.min(Math.max(0, newVec.x) , KGDN.grid[0]-1);
+    newVec.y  = Math.min(Math.max(0, newVec.y) , KGDN.grid[1]-1);
+    if(Pieces.grid[newVec.x][newVec.y] == 0){
+        Cursor.gridX = newVec.x; 
+        Cursor.gridY = newVec.y;
+    }
     KGDN.placeOnGrid(Cursor.mesh,Cursor.gridX,Cursor.gridY,KGDN.tileGrid.position.z + 2);
     KGDN.placeOnGrid(KGDN.cursLight,Cursor.gridX,Cursor.gridY,KGDN.tileGrid.position.z + 30);
-    console.log(KGDN.cursLight.position.x + " " + KGDN.cursLight.position.y);
+//    console.log(KGDN.cursLight.position.x + " " + KGDN.cursLight.position.y);
     KGDN.camera.position.x = (event.clientX - window.innerWidth/2)/60;
     KGDN.camera.position.y = -(event.clientY - window.innerHeight/2) /60;
 };

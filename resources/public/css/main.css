@@ -62,6 +62,16 @@ margin-top: auto;
 margin-bottom:auto;
 margin-left:50px;
 }
+#stems{
+font-size: 10pt;
+border-radius: 10px;
+background-color: rgba(0,0,0,0.1);
+}
+#nexttext{
+font-size: 10pt;
+border-radius: 10px;
+background-color: rgba(0,0,0,0.2);
+}
 #title{ 
     left: 0px;
     top:0px;
@@ -69,7 +79,7 @@ margin-left:50px;
         position: absolute;
         z-index: 2;
         background-size:contain;
-        width: 100%;
+        width: 33%;
         height:100%;
         margin: 0px auto;
         padding: 50px;
@@ -172,7 +182,7 @@ color:#001000;
 .diamonds {background-image: url("/img/piece2.png");}
 .clubs {background-image: url("/img/piece3.png");}
 .spades {background-image: url("/img/piece4.png");}
-.reds {background-image: url("/img/piece6.png");}
+.reds {background-image: url("/img/piece0.png");}
 .drop {background-image: url("/img/drop.gif");
 border-style: solid;
 border-width: 2px;
