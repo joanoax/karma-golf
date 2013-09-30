@@ -12,11 +12,13 @@
                "WTF" "reds"
                })
 
+
 (defn build-game [subreddits]
   {:score 0
    :threads (zipmap subreddits (repeat []))
    }
   )
+
 
 (defn next-comment
   "The next comment from the thread, and return the comment and an updated thread vector."

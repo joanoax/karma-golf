@@ -21,6 +21,7 @@
   {:comments vec}
   )
 
+
 (defn download-to-db
   "Downloaded all posts on subreddit front page, cleans them, and loads them into the database."
   [subreddit]
