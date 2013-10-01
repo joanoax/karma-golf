@@ -5,24 +5,6 @@ background-size: 100%;
 height:100%;
 width:100%;
 }
-#convo-top{
-float:right;
-background-image: url("/img/convo-top.png");
-margin-left: auto;
-background-size: contain;
-background-repeat: no-repeat;
-width: 100%;
-height: 50%;
-}
-#convo-bottom{
-float:left;
-background-image: url("/img/convo-bottom.png");
-border-color: #DDF;
-background-size: contain;
-background-repeat: no-repeat;
-width: 100%;
-height: 50%;
-}
 .contents{
 text-align:center;
 position: relative;
@@ -41,7 +23,7 @@ h1,h2,h3{
         color: #FFFFFF;}
         
 h1{
-font-size: 62px;
+font-size: 60px;
 width: 100%;
 text-align: center;
 }
@@ -51,18 +33,6 @@ font-size: 36px;
 h3{
 font-size: 21px;
 }
-.panel{
-background-size: 100%;
-position:absolute;
-text-align:center;
-height:776px;
-top: 0px;
-bottom: 0px;
-max-height: 100%;
-margin-top: auto;
-margin-bottom:auto;
-margin-left:50px;
-}
 #stems{
 font-size: 12pt;
 border-radius: 10px;
@@ -71,12 +41,6 @@ background-color: rgba(0,0,0,0.0);
 #stems>li{
     height:70px;
     overflow: hidden;
-}
-    
-#nexttext{
-font-size: 10pt;
-border-radius: 10px;
-background-color: rgba(0,0,0,0.2);
 }
 #title{ 
     left: 20px;
@@ -96,7 +60,16 @@ background-color: rgba(0,0,0,0.2);
         font-family: "Courier New", serif;
         font-size: 20pt;
       }
-
+#yinyang{
+    background-size: 100%;
+    background-image: url("/img/yinyang.png");
+    left: 56%;
+    bottom: -150px;
+//    opacity: 0.7;
+    position: absolute;
+    width: 300px;
+    height:300px;
+    }
 #convo-bubble{
     background-size: 100% 100%;
     background-image: url("/img/convo-bottom.png");
@@ -127,53 +100,15 @@ font-size: 20px;
 color: #FFFFFF;
 
 }
+.thetitle{
+position:fixed;
+bottom:-20px;
+left: 19%;
+}
 .up{
 position:fixed;
 bottom:20px;
-left: 63%;
-}
-.bg1{
-z-index:2;
-overflow:hidden;
-position:fixed;
-margin: 0px;
-background-image: url("/img/space-bg1.jpg");
-background-size: 100%;
-height:100%;
-width:100%;
-}
-.bg2{
-position:fixed;
-margin: 0px;
-z-index:3;
-overflow:hidden;
-background-image: url("/img/space-bg2.png");
-background-size: 100%;
-height:100%;
-width:100%;
-}
-.bg3{
-position:fixed;
-margin: 0px;
-z-index:4;
-overflow:hidden;
-background-image: url("/img/space-bg3.png");
-background-size: 100%;
-height:100%;
-width:100%;
-}
-.bg-game{
-z-index:5;}
-
-.bg4{
-position:fixed;
-margin-left: -100px;
-z-index:4;
-overflow:hidden;
-background-image: url("/img/space-bg4.png");
-background-size: 100%;
-height:100%;
-width:120%;
+right: 20px;
 }
 
 .piece{

@@ -41,7 +41,7 @@ ipsum dolor sit amet...'
    [:div#container ""]
     [:div#yinyang]
      [:div#title
-      [:h1.thetitle"karmagarden"]
+      [:h1.thetitle "karmagarden"]
       [:div.score-box "stems:"]
       [:ul#stems
        ]

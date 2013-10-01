@@ -3,9 +3,10 @@ KGDN.fps = 50;
 KGDN.bgLayers = [];
 KGDN.bgZs = [-250,-220,-120];
 KGDN.camOffset = [0.0,10.0];
-KGDN.velocity = 1;
+KGDN.velocity = 2;
 KGDN.grid = [13,13];
 KGDN.score = 0;
+KGDN.yinScore = 0;
 KGDN.gridSize = 100;
 KGDN.pieceSize = KGDN.gridSize/KGDN.grid[0];
 KGDN.subreddits = ["AskReddit", "worldnews" ,  "science" ,  "gaming" ,  "WTF" ];
@@ -29,7 +30,24 @@ KGDN.drawGrid = function(xo,yo,z){
                 KGDN.scene.add(tileGrid);
     KGDN.tileGrid = tileGrid;
 };
+KGDN.animRot = function(start,angle) {
+    // caching the object for performance reasons
+    var $elem = $('#yinyang');
 
+    // we use a pseudo object for the animation
+    // (starts from `0` to `angle`), you can name it as you want
+    $({deg: start}).animate({deg: angle}, {
+        duration: 500,
+        step: function(now) {
+            // in the step-callback (that is fired each step of the animation),
+            // you can use the `now` paramter which contains the current
+            // animation-position (`0` up to `angle`)
+            $elem.css({
+                transform: 'rotate(' + now + 'deg)'
+            });
+        }
+    });
+}
 KGDN.placeOnGrid = function(mesh,gridX, gridY,z){
         var newX =  gridX * KGDN.pieceSize +  KGDN.tileGrid.position.x - 50 + KGDN.pieceSize/2;
     var newY = - gridY * KGDN.pieceSize + KGDN.tileGrid.position.y + 50 - KGDN.pieceSize/2;
@@ -117,9 +135,13 @@ KGDN.init = function (){
        Pieces.init();
         //Static lights.
     KGDN.scene.add(new THREE.AmbientLight(0x353035));
-    var pl = new THREE.PointLight(0x886988,3,80);
+    var pl = new THREE.PointLight(0x886988,3,220);
     pl.position.set(KGDN.tileGrid.position.x ,KGDN.tileGrid.position.y ,-60);
     KGDN.scene.add(pl);
+    
+    var otherLight = new THREE.PointLight(0x886699,2,500);
+    otherLight.position.set(0,0,-300);
+    KGDN.scene.add(otherLight);
     KGDN.cursLight = pl;
     
     window.onmousedown = function(event){
@@ -176,22 +198,30 @@ KGDN.update = function () {
 
 KGDN.placeFalling = function(){
 
-
+    
 
             Pieces.falling.place();
         //Calculate score.
     var theStem;
+    var yinScoreOld = KGDN.yinScore;
     for(var i in Pieces.stems){
         var theStem = Pieces.stems[i].sub === Pieces.falling.sub ? Pieces.stems[i] : theStem;
         }
     
     if(theStem){
-        var points = Math.pow( 5 -  KGDN.pieceDist(theStem.x,theStem.y,Pieces.falling.x,Pieces.falling.y) , 2);
+        var points = Math.pow( 7 - 2 *  KGDN.pieceDist(theStem.x,theStem.y,Pieces.falling.x,Pieces.falling.y) , 2);
         points *= 5;
-        if ( 5 -  KGDN.pieceDist(theStem.x,theStem.y,Pieces.falling.x,Pieces.falling.y) < 0)
+        if ( 5 -  KGDN.pieceDist(theStem.x,theStem.y,Pieces.falling.x,Pieces.falling.y) < 0){
             points *= -1;
+            KGDN.yinScore += points;
+            }
+        else{
+            KGDN.yinScore += points/5;
+            }
         KGDN.score += points;
         }
+    KGDN.yinScore = Math.min(Math.max(KGDN.yinScore,-90),90)
+    KGDN.animRot(yinScoreOld,KGDN.yinScore);
     $("#points").html((points >= 0 ? "+" : " ") + points + "!");
     $("#score").html("" + KGDN.score);
 //       Pieces.grow();
@@ -212,6 +242,7 @@ KGDN.updateHTML = function(){
         $("#stems").append(row);
     }
     $("#convo-bubble > .contents").html(Pieces.falling.text);  
+    
 };
 KGDN.run = (function() {
   var loops = 0, skipTicks = 1000 / KGDN.fps,

@@ -4,7 +4,7 @@ Pieces.nextReq = 0;
 
 Pieces.unplacedQueue = [];
 Pieces.stems = [];
-Pieces.stemLocs = [[2,2],[6,6],[10,2],[2,10],[10,10]];
+Pieces.stemLocs = [[6,6],[2,2],[10,2],[2,10],[10,10]];
 Pieces.stemLightCols = {"AskReddit":  0xcd4a67,
                         "worldnews" :  0xe5af12,
                           "science":  0xb7b0d6,
