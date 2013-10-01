@@ -35,7 +35,7 @@ Cursor.update = function(event){
     dir = vector.sub(KGDN.camera.position).normalize();
     ray = new THREE.Raycaster(KGDN.camera.position, dir );
     distance = - dir.clone().multiplyScalar(KGDN.tileGrid.position.z/dir.z).length();
-    //console.log(distance);
+    console.log(distance);
     var newVec = KGDN.camera.position.clone().add(dir.multiplyScalar(distance)); 
     newVec.z = KGDN.tileGrid.position.z;
 
@@ -54,3 +54,5 @@ Cursor.update = function(event){
     KGDN.camera.position.x = (event.clientX - window.innerWidth/2)/60;
     KGDN.camera.position.y = -(event.clientY - window.innerHeight/2) /60;
 };
+
+

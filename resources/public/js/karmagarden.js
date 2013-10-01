@@ -3,10 +3,14 @@ KGDN.fps = 50;
 KGDN.bgLayers = [];
 KGDN.bgZs = [-250,-220,-120];
 KGDN.camOffset = [0.0,10.0];
-KGDN.velocity = 3;
+KGDN.velocity = 2;
 KGDN.grid = [15, 15];
 KGDN.pieceSize = 6.6;
 KGDN.subreddits = ["AskReddit", "worldnews" ,  "science" ,  "gaming" ,  "WTF" ];
+
+String.prototype.capitalize = function() {
+    return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
+};
 
 KGDN.drawGrid = function(xo,yo,z){
     var tileTxt = THREE.ImageUtils.loadTexture("/img/baseTile.png");
@@ -31,7 +35,9 @@ KGDN.placeOnGrid = function(mesh,gridX, gridY,z){
 };
 
 
+
 KGDN.init = function (){
+
     var WIDTH = window.innerWidth;
     var HEIGHT = window.innerHeight;
     KGDN.projector = new THREE.Projector();
@@ -53,13 +59,19 @@ KGDN.init = function (){
     //KGDN.camera.position.z = 300;
     KGDN.scene = new THREE.Scene();
     
+    //Initialize piece data and meshes.
+ 
+
+
+    
+    
     // add the camera to the scene
     KGDN.scene.add(KGDN.camera);
     KGDN.renderer.setSize(WIDTH, HEIGHT);
     $container.append(KGDN.renderer.domElement);
 
     KGDN.bgVecs = [];
-    KGDN.bgVecs[0] = new THREE.Vector3(50,0,-300);
+    KGDN.bgVecs[0] = new THREE.Vector3(50,0,-267);
     KGDN.bgVecs[1] = new THREE.Vector3(-20,0,-150);
     KGDN.bgVecs[2] = new THREE.Vector3(0,0,-100);
     
@@ -87,7 +99,7 @@ KGDN.init = function (){
     KGDN.drawGrid(40,0,-150);
        Pieces.init();
         //Static lights.
-    KGDN.scene.add(new THREE.AmbientLight(0x22222));
+    KGDN.scene.add(new THREE.AmbientLight(0x555555));
     var pl = new THREE.PointLight(0x444444,3,220);
     pl.position.set(KGDN.tileGrid.position.x ,KGDN.tileGrid.position.y ,-120);
        KGDN.scene.add(pl);
@@ -95,14 +107,17 @@ KGDN.init = function (){
     
     window.onmousedown = function(event){
         var isStem = Math.floor(Math.random() + 0.5) == 1;
-        Pieces.falling.place();
-        Pieces.grow();
-        Pieces.falling  = Pieces.unplacedQueue.shift();
+        KGDN.placeFalling();
+      //  Pieces.grow();
+        for(var i = 0; i < Pieces.stems.length; i++){
+            var bs = Pieces.getConnected(Pieces.stems[i].x,Pieces.stems[i].y).length;
+            console.log(Pieces.stems[i].x + "x " + Pieces.stems[i].y + "y " + bs);
+        }
+        console.log("Loading");
         };
     Cursor.init('/img/cursor.png'); 
 
-    KGDN.scene.add(Cursor.mesh);
-
+    KGDN.scene.add(Cursor.mesh);        
  // window.setInterval(function(){Pieces.loadPiece("AskReddit",false)}, 500);
 
 };
@@ -125,38 +140,40 @@ KGDN.update = function () {
     var stem,subreddit;
 
     //Load more pieces if the queue is not full.
-    if(Pieces.unplacedQueue.length < 5){
-        if(_.filter(Pieces.unplacedQueue,function(p){return p.stem;}).length + Pieces.stems.length < 5){
-            stem = true;
-            subreddit = KGDN.subreddits[_.random(KGDN.subreddits.length-1)];
-        }
-    else{
+    if(Pieces.unplacedQueue.length < 10){
         stem = false;
         subreddit = Pieces.stems[_.random(Pieces.stems.length-1)].sub;
-        }
         Pieces.unplacedQueue.push(Pieces.loadPiece(subreddit,stem));
     }
-
-    //Update stem text.
-    $("#stems").html("");
-    for(var i = 0 ; i < Pieces.stems.length; i++){
-        $("#stems").append("<li>" + Pieces.stems[i].text + "</li>");
-    }
-    $("#nexttext").html(Pieces.falling.text);   
+ 
 
    Pieces.falling.x = Cursor.gridX;
    Pieces.falling.y = Cursor.gridY; 
-   Pieces.falling.group.position.z += KGDN.velocity;
+        Pieces.falling.group.position.z += KGDN.velocity;
    KGDN.placeOnGrid(Pieces.falling.group,Pieces.falling.x, Pieces.falling.y, Pieces.falling.group.position.z);
     
     if(Pieces.falling.group.position.z > KGDN.tileGrid.position.z){
-        Pieces.falling.place();
-        Pieces.grow();
-        Pieces.falling = Pieces.unplacedQueue.shift();
+        KGDN.placeFalling();
         }
     };
 
-
+KGDN.placeFalling = function(){
+            Pieces.falling.place();
+       Pieces.grow();
+        Pieces.falling = Pieces.unplacedQueue.shift();
+    //Update stem text.
+    $("#stems").html("");
+    for(var i = 0 ; i < Pieces.stems.length; i++){
+        var row = "<li> <div class ='show-piece piece" + i  + "' ></div>";
+        row += " *** " + Pieces.stems[i].sub.capitalize();
+        row += " *** " + Pieces.getNeighbors(Pieces.stems[i].x,Pieces.stems[i].y).length + "/8";
+        row += " *** " + Pieces.stems[i].text;
+  
+        row += "</li>";
+        $("#stems").append(row);
+    }
+    $("#convo-bubble > .contents").html(Pieces.falling.text);  
+};
 KGDN.run = (function() {
   var loops = 0, skipTicks = 1000 / KGDN.fps,
       maxFrameSkip = 10,
@@ -172,7 +189,7 @@ KGDN.run = (function() {
     }
     
   //  KGDN.draw();
-  };
+  }; 
 })();
 
 

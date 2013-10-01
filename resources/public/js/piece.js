@@ -31,6 +31,7 @@ function Piece(x,y,text,score,sub,stem,falling){
   
   this.print();
 };
+    
 
 Piece.prototype.place = function(){
  
@@ -46,10 +47,10 @@ Piece.prototype.place = function(){
             new THREE.PlaneGeometry(20,KGDN.pieceSize * 3,0),
             new THREE.MeshLambertMaterial({map: Pieces.stemTxt,
                                            transparent: true,
-                                           opacity: 0.8, 
+                                           opacity: 0.3, 
                                           })));  
         mesh[0].rotation.z = Math.PI/2 * _.random(4);
-        mesh[0].position.z = -0.5;
+        mesh[0].position.z = 0;
         this.group.add(mesh[0]);
         mesh[1] = new THREE.Mesh(
             new THREE.PlaneGeometry(KGDN.pieceSize,KGDN.pieceSize,0),
@@ -81,10 +82,6 @@ Piece.prototype.place = function(){
     this.group.add(textMesh);
     KGDN.placeOnGrid(this.group,this.x,this.y,this.z);
     KGDN.scene.add(this.group);
-    if (this.stem)
-        Pieces.stems.push(this);
-    else
-        Pieces.flowers.push(this);
     Pieces.grid[this.x][this.y] = this;
 
 };

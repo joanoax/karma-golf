@@ -44,11 +44,15 @@ ipsum dolor sit amet...'
      [:div#title
       [:h1 "karmagarden"]
       [:h3 "stems:"]
-      [:ul#stems]
-      [:h3 "next:"]
+      [:ul#stems
+       ]
+    
       [:div#nexttext]
       [:p "SCORE -- " [:span#score "0"]]
       ]
+     [:div#convo-bubble
+      [:div.contents
+       "next:"]]
      )
   
   )
