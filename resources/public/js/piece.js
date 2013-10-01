@@ -34,17 +34,18 @@ function Piece(x,y,text,score,sub,stem,falling){
     
 
 Piece.prototype.place = function(){
- 
-
+    console.log(KGDN.pieceSize);
+     var thisText;
     if(this.group != undefined)
         KGDN.scene.remove(this.group);
     this.z = KGDN.tileGrid.position.z; 
     var mesh = [];
     this.group = new THREE.Object3D();
-        this.group.position.z = this.z;
+    this.group.position.z = this.z;
+   
     if(this.stem){
         mesh.push( new THREE.Mesh(
-            new THREE.PlaneGeometry(20,KGDN.pieceSize * 3,0),
+            new THREE.PlaneGeometry(KGDN.pieceSize * 3,KGDN.pieceSize * 3,0),
             new THREE.MeshLambertMaterial({map: Pieces.stemTxt,
                                            transparent: true,
                                            opacity: 0.3, 
@@ -53,33 +54,37 @@ Piece.prototype.place = function(){
         mesh[0].position.z = 0;
         this.group.add(mesh[0]);
         mesh[1] = new THREE.Mesh(
-            new THREE.PlaneGeometry(KGDN.pieceSize,KGDN.pieceSize,0),
+            new THREE.PlaneGeometry(KGDN.pieceSize * 1.36,KGDN.pieceSize * 1.36,0),
             new THREE.MeshLambertMaterial({map: Pieces.flowerTxt[this.sub],
                                            transparent: true,
                                            opacity: 1, 
                                           }));
         mesh[1].position.z = 2.0;
         this.group.add(mesh[1]);
+        thisText = this.sub;
         }
     else{
         mesh.push( new THREE.Mesh(
-            new THREE.PlaneGeometry(6.6,KGDN.pieceSize,0),
+            new THREE.PlaneGeometry(KGDN.pieceSize,KGDN.pieceSize,0),
             new THREE.MeshLambertMaterial({map: Pieces.flowerTxt[this.sub],
                                            transparent: true,
                                            opacity: 1, 
                                           })));  
         mesh[0].rotation.z = Math.PI * Math.random();
-        mesh[0].position.z = 5;
+        mesh[0].position.z = 1.5;
         this.group.add(mesh[0]);
+         thisText = this.score >= 1000 ? Math.floor(this.score/1000) + "k" : this.score;
+
         }
-    var thisText = this.score >= 1000 ? Math.floor(this.score/1000) + "k" : this.score;
-    var textGeo = new THREE.TextGeometry(thisText,{font: 'gentilis', size:2.6, height: 0.1});
+ console.log("Now here.");
+        var textGeo = new THREE.TextGeometry(thisText,{font: 'gentilis', size:2.6, height: 0.1});
     var textMesh = new THREE.Mesh(textGeo,new THREE.MeshBasicMaterial({color: Pieces.subColors[this.sub] ,
                                                                        transparent: true, opacity: 0.8
                                                                      
                                                                       }));
     textMesh.position.set(-3,0,5);
     this.group.add(textMesh);
+    
     KGDN.placeOnGrid(this.group,this.x,this.y,this.z);
     KGDN.scene.add(this.group);
     Pieces.grid[this.x][this.y] = this;

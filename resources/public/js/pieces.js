@@ -4,7 +4,12 @@ Pieces.nextReq = 0;
 
 Pieces.unplacedQueue = [];
 Pieces.stems = [];
-Pieces.stemLocs = [[2,2],[7,7],[12,2],[2,12],[12,12]];
+Pieces.stemLocs = [[2,2],[6,6],[10,2],[2,10],[10,10]];
+Pieces.stemLightCols = {"AskReddit":  0xcd4a67,
+                        "worldnews" :  0xe5af12,
+                          "science":  0xb7b0d6,
+                         "gaming":  0x6e1874,
+                         "WTF":  0xe36214};
 Pieces.flowers = [];
 Pieces.grid = [];
 Pieces.growth = [];

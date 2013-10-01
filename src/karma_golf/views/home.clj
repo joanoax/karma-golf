@@ -32,10 +32,9 @@ ipsum dolor sit amet...'
 
 (noir/defpage "/" []
   (session/put! :user-id (str (java.util.UUID/randomUUID)))
-  (session/put! :game (ref (second (game/get-stem
-                                    (game/build-game (keys game/subreds))
-                                    "AskReddit"
-                                    ))))
+  (session/put! :game (ref
+                           (game/build-game (keys game/subreds))
+                           ))
   
   (common/layout-3D
    [:div#uuid.hidden (session/get :user-id)]

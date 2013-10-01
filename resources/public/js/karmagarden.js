@@ -3,9 +3,10 @@ KGDN.fps = 50;
 KGDN.bgLayers = [];
 KGDN.bgZs = [-250,-220,-120];
 KGDN.camOffset = [0.0,10.0];
-KGDN.velocity = 2;
-KGDN.grid = [15, 15];
-KGDN.pieceSize = 6.6;
+KGDN.velocity = 1;
+KGDN.grid = [13,13];
+KGDN.gridSize = 100;
+KGDN.pieceSize = KGDN.gridSize/KGDN.grid[0];
 KGDN.subreddits = ["AskReddit", "worldnews" ,  "science" ,  "gaming" ,  "WTF" ];
 
 String.prototype.capitalize = function() {
@@ -17,7 +18,7 @@ KGDN.drawGrid = function(xo,yo,z){
     tileTxt.wrapS = tileTxt.wrapT = THREE.RepeatWrapping;
     tileTxt.repeat.set( KGDN.grid[0], KGDN.grid[1] );
                 var tileGrid = new THREE.Mesh(
-                    new THREE.PlaneGeometry(100,100,0),
+                    new THREE.PlaneGeometry(KGDN.gridSize,KGDN.gridSize,0),
                     new THREE.MeshBasicMaterial({map: tileTxt,
                                                  transparent: true,
                                                  opacity: 0.15
@@ -54,7 +55,9 @@ KGDN.init = function (){
 
     // create a WebGL renderer, camera
     // and a scene
-    KGDN.renderer = new THREE.WebGLRenderer({antialiasing: true});
+    KGDN.renderer = new THREE.WebGLRenderer({antialiasing: true,
+                                             maxLights: 7
+                                            });
     KGDN.camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
     //KGDN.camera.position.z = 300;
     KGDN.scene = new THREE.Scene();
@@ -99,10 +102,10 @@ KGDN.init = function (){
     KGDN.drawGrid(40,0,-150);
        Pieces.init();
         //Static lights.
-    KGDN.scene.add(new THREE.AmbientLight(0x555555));
-    var pl = new THREE.PointLight(0x444444,3,220);
-    pl.position.set(KGDN.tileGrid.position.x ,KGDN.tileGrid.position.y ,-120);
-       KGDN.scene.add(pl);
+    KGDN.scene.add(new THREE.AmbientLight(0x353035));
+    var pl = new THREE.PointLight(0x886988,3,80);
+    pl.position.set(KGDN.tileGrid.position.x ,KGDN.tileGrid.position.y ,-60);
+    KGDN.scene.add(pl);
     KGDN.cursLight = pl;
     
     window.onmousedown = function(event){
