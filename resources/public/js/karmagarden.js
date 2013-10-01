@@ -131,7 +131,7 @@ KGDN.init = function (){
      
 
     //Game-board
-    KGDN.drawGrid(40,0,-150);
+    KGDN.drawGrid(60,0,-150);
        Pieces.init();
         //Static lights.
     KGDN.scene.add(new THREE.AmbientLight(0x353035));
@@ -143,17 +143,8 @@ KGDN.init = function (){
     otherLight.position.set(0,0,-300);
     KGDN.scene.add(otherLight);
     KGDN.cursLight = pl;
-    
-    window.onmousedown = function(event){
-        var isStem = Math.floor(Math.random() + 0.5) == 1;
-        KGDN.placeFalling();
-      //  Pieces.grow();
-        for(var i = 0; i < Pieces.stems.length; i++){
-            var bs = Pieces.getConnected(Pieces.stems[i].x,Pieces.stems[i].y).length;
-            console.log(Pieces.stems[i].x + "x " + Pieces.stems[i].y + "y " + bs);
-        }
-        console.log("Loading");
-        };
+     KGDN.draw();
+
     Cursor.init('/img/cursor.png'); 
 
     KGDN.scene.add(Cursor.mesh);        
@@ -209,11 +200,11 @@ KGDN.placeFalling = function(){
         }
     
     if(theStem){
-        var points = Math.pow( 7 - 2 *  KGDN.pieceDist(theStem.x,theStem.y,Pieces.falling.x,Pieces.falling.y) , 2);
+        var points = Math.pow( 5 -   KGDN.pieceDist(theStem.x,theStem.y,Pieces.falling.x,Pieces.falling.y) , 2);
         points *= 5;
-        if ( 5 -  KGDN.pieceDist(theStem.x,theStem.y,Pieces.falling.x,Pieces.falling.y) < 0){
+        if ( 6  -  KGDN.pieceDist(theStem.x,theStem.y,Pieces.falling.x,Pieces.falling.y) < 0){
             points *= -1;
-            KGDN.yinScore += points;
+            KGDN.yinScore += points/5;
             }
         else{
             KGDN.yinScore += points/5;
@@ -266,6 +257,19 @@ KGDN.run = (function() {
 $(document).ready(function(){
     // Start the game loop
     KGDN.init();
-    KGDN.draw();
-    KGDN._intervalId = setInterval(KGDN.run, 0);
+    $("#start-game").click(function(){
+        $(".loading").fadeOut(3000,function(){
+        KGDN.draw();
+        KGDN._intervalId = setInterval(KGDN.run, 0);
+                window.onmousedown = function(event){
+        var isStem = Math.floor(Math.random() + 0.5) == 1;
+        KGDN.placeFalling();
+      //  Pieces.grow();
+        for(var i = 0; i < Pieces.stems.length; i++){
+            var bs = Pieces.getConnected(Pieces.stems[i].x,Pieces.stems[i].y).length;
+            console.log(Pieces.stems[i].x + "x " + Pieces.stems[i].y + "y " + bs);
+        }
+        console.log("Loading");
+        };
+        });});
 });

@@ -41,9 +41,9 @@
     (include-css "/css/main.css")
     (include-js "/js/underscore-min.js")
     (include-js "//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")
-    (include-js "//cdnjs.cloudflare.com/ajax/libs/three.js/r58/three.min.js")
+    (include-js "/js/three.min.js")
     (include-js "/js/gentilis_font/gentilis_regular.typeface.js")
-    (include-js "/js/cat.js")
+   
     (include-js "/js/cursor.js")
     (include-js "/js/piece.js")
     (include-js "/js/pieces.js")

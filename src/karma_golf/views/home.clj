@@ -41,15 +41,19 @@ ipsum dolor sit amet...'
    [:div#container ""]
     [:div#yinyang]
      [:div#title
-      [:h1.thetitle"karmagarden"]
-      [:div.score-box "stems:"]
+
+      #_[:div.score-box "stems:"]
       [:ul#stems
        ]
       [:div.up
        [:div#points.score-box]
        [:div.score-box "Score: " [:span#score "0"]]]
+      
       ]
-    
+     [:div.loading
+      [:div.containst [:a#start-game "Play"]]
+      ]
+          [:h1.thetitle "karmagarden"]
      [:div#convo-bubble
       [:div.contents
        "Place the comment-flowers near the subreddit they came from!"]]
