@@ -45,9 +45,8 @@ ipsum dolor sit amet...'
       [:h3 "stems:"]
       [:ul#stems
        ]
-    
-      [:div#nexttext]
-      [:p "SCORE -- " [:span#score "0"]]
+      [:div#points]
+      [:div#score-box "Score: " [:span#score "0"]]
       ]
      [:div#convo-bubble
       [:div.contents

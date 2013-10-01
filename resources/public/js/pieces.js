@@ -35,6 +35,7 @@ Pieces.init = function(){
             }}
 
     //Load stems.
+    $.ajaxSetup( { "async": false } );
     var px,py;
     for (var i= 0; i < KGDN.subreddits.length; i++){
           
@@ -43,7 +44,8 @@ Pieces.init = function(){
         Pieces.grid[px][py] = Pieces.loadPiece(KGDN.subreddits[i],true,px,py,false);
         Pieces.stems.push(Pieces.grid[px][py]);
         }
-
+    
+        $.ajaxSetup( { "async": true } );
     
 
     Pieces.falling = new Piece(Cursor.gridX,

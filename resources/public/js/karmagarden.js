@@ -5,6 +5,7 @@ KGDN.bgZs = [-250,-220,-120];
 KGDN.camOffset = [0.0,10.0];
 KGDN.velocity = 1;
 KGDN.grid = [13,13];
+KGDN.score = 0;
 KGDN.gridSize = 100;
 KGDN.pieceSize = KGDN.gridSize/KGDN.grid[0];
 KGDN.subreddits = ["AskReddit", "worldnews" ,  "science" ,  "gaming" ,  "WTF" ];
@@ -34,6 +35,19 @@ KGDN.placeOnGrid = function(mesh,gridX, gridY,z){
     var newY = - gridY * KGDN.pieceSize + KGDN.tileGrid.position.y + 50 - KGDN.pieceSize/2;
     mesh.position.set(newX,newY,z);
 };
+KGDN.pieceDist = function( p1x,p1y,p2x,p2y )
+{
+  var xs = 0;
+  var ys = 0;
+ 
+  xs = p2x - p1x;
+  xs = xs * xs;
+ 
+  ys = p2y - p1y;
+  ys = ys * ys;
+ 
+  return Math.round(Math.sqrt( xs + ys ));
+}
 
 
 
@@ -161,8 +175,24 @@ KGDN.update = function () {
     };
 
 KGDN.placeFalling = function(){
+
+
+
             Pieces.falling.place();
-       Pieces.grow();
+        //Calculate score.
+    var theStem;
+    for(var i in Pieces.stems){
+        var theStem = Pieces.stems[i].sub === Pieces.falling.sub ? Pieces.stems[i] : theStem;
+        }
+    
+    if(theStem){
+        var points = Math.pow( 5 -  KGDN.pieceDist(theStem.x,theStem.y,Pieces.falling.x,Pieces.falling.y) , 2);
+        points *= 5;
+        KGDN.score += points;
+        }
+    $("#points").html((points >= 0 ? "+" : " ") + points + "!");
+    $("#score").html("" + KGDN.score);
+//       Pieces.grow();
         Pieces.falling = Pieces.unplacedQueue.shift();
     //Update stem text.
     $("#stems").html("");
