@@ -42,15 +42,16 @@ ipsum dolor sit amet...'
 
      [:div#title
       [:h1 "karmagarden"]
-      [:h3 "stems:"]
+      [:div.score-box "stems:"]
       [:ul#stems
        ]
-      [:div#points]
-      [:div#score-box "Score: " [:span#score "0"]]
+      [:div.up
+       [:div#points.score-box]
+       [:div.score-box "Score: " [:span#score "0"]]]
       ]
      [:div#convo-bubble
       [:div.contents
-       "next:"]]
+       "Place the comment-flowers near the subreddit they came from!"]]
      )
   
   )

@@ -198,9 +198,9 @@ KGDN.placeFalling = function(){
     $("#stems").html("");
     for(var i = 0 ; i < Pieces.stems.length; i++){
         var row = "<li> <div class ='show-piece piece" + i  + "' ></div>";
-        row += " *** " + Pieces.stems[i].sub.capitalize();
-        row += " *** " + Pieces.getNeighbors(Pieces.stems[i].x,Pieces.stems[i].y).length + "/8";
-        row += " *** " + Pieces.stems[i].text;
+        row += " " + Pieces.stems[i].sub.capitalize();
+      //  row += " * " + Pieces.getNeighbors(Pieces.stems[i].x,Pieces.stems[i].y).length + "/8";
+        row += " * " + Pieces.stems[i].text;
   
         row += "</li>";
         $("#stems").append(row);
