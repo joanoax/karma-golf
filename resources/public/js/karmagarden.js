@@ -155,7 +155,7 @@ KGDN.draw = function() {
   
 KGDN.update = function () {
     var stem,subreddit;
-
+    KGDN.updateHTML();
     //Load more pieces if the queue is not full.
     if(Pieces.unplacedQueue.length < 10){
         stem = false;
@@ -194,7 +194,11 @@ KGDN.placeFalling = function(){
     $("#score").html("" + KGDN.score);
 //       Pieces.grow();
         Pieces.falling = Pieces.unplacedQueue.shift();
-    //Update stem text.
+    
+};
+
+KGDN.updateHTML = function(){
+        //Update stem text.
     $("#stems").html("");
     for(var i = 0 ; i < Pieces.stems.length; i++){
         var row = "<li> <div class ='show-piece piece" + i  + "' ></div>";
