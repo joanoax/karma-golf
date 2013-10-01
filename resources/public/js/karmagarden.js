@@ -188,6 +188,8 @@ KGDN.placeFalling = function(){
     if(theStem){
         var points = Math.pow( 5 -  KGDN.pieceDist(theStem.x,theStem.y,Pieces.falling.x,Pieces.falling.y) , 2);
         points *= 5;
+        if ( 5 -  KGDN.pieceDist(theStem.x,theStem.y,Pieces.falling.x,Pieces.falling.y) < 0)
+            points *= -1;
         KGDN.score += points;
         }
     $("#points").html((points >= 0 ? "+" : " ") + points + "!");
