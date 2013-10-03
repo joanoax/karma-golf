@@ -126,7 +126,16 @@ KGDN.init = function (){
         KGDN.bgLayers.push(bgMesh);
         }
     
-
+    //cat & yinyang
+    var catMat = new THREE.MeshLambertMaterial({map: THREE.ImageUtils.loadTexture('/img/fullofstars.png'),transparent: true, opacity: 1
+            });
+    var catScale = 7;
+    KGDN.cat = new THREE.Mesh(new THREE.PlaneGeometry(5*catScale,4*catScale),catMat);
+                                               KGDN.cat.position.set(0,0,-80);
+                                               
+                                               
+    KGDN.scene.add(KGDN.cat);
+     
  
      
 

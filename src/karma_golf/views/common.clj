@@ -11,13 +11,15 @@
   ga('create', 'UA-44486603-1', 'karma-golf.herokuapp.com');
   ga('send', 'pageview');
 
-</script> ")
+</script> "
+  )
 
 (defpartial layout [& content]
   [:html
    [:head
     [:title "K A R M A   G A R D E N"]
-    google-analytics-snippet
+
+    
     (include-css "/css/reset.css")
     (include-css "/css/bootstrap.css")
     (include-css "/css/main.css")
@@ -39,6 +41,7 @@
     (include-css "/css/reset.css")
     (include-css "/css/bootstrap.css")
     (include-css "/css/main.css")
+        google-analytics-snippet
     (include-js "/js/underscore-min.js")
     (include-js "//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")
     (include-js "/js/three.min.js")
