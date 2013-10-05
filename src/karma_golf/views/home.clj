@@ -47,7 +47,10 @@ ipsum dolor sit amet...'
        ]
       [:div.up
        [:div#points.score-box]
-       [:div.score-box "Score: " [:span#score "0"]]]
+       [:div.score-box "Score: " [:span#score "0"]]
+       [:div.score-box "Trims Left: " [:span#trims "5"]]
+       ]
+      
       
       ]
      [:div.loading

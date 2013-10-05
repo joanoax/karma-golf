@@ -5,11 +5,12 @@ Pieces.nextReq = 0;
 Pieces.unplacedQueue = [];
 Pieces.stems = [];
 Pieces.stemLocs = [[6,6],[2,2],[10,2],[2,10],[10,10]];
-Pieces.stemLightCols = {"AskReddit":  0xcd4a67,
-                        "worldnews" :  0xe5af12,
-                          "science":  0xb7b0d6,
-                         "gaming":  0x6e1874,
-                         "WTF":  0xe36214};
+Pieces.neighbs = [[-1,0],[1,0],[0,-1],[0,1]];
+Pieces.growthParams = {"AskReddit":  [400,0.1],
+                        "worldnews" : [100,0.05],
+                          "science": [5,0.005],
+                         "gaming":  [10,0.01],
+                         "WTF":  [50,0.02]};
 Pieces.flowers = [];
 Pieces.grid = [];
 Pieces.growth = [];
@@ -30,8 +31,10 @@ Pieces.init = function(){
     //Build grid for placed pieces.
     for(var x = 0; x < KGDN.grid[0]; x++){
         Pieces.grid[x] = [];
+        Pieces.growth[x] = [];
         for(var y = 0; y < KGDN.grid[1]; y++){
             Pieces.grid[x][y] = 0;
+            Pieces.growth[x][y] = undefined; 
             }}
 
     //Load stems.
@@ -83,17 +86,17 @@ Pieces.getNeighbors = function(x,y) {
             }
         }
         }
+
     return neighbors;
 };
 
-Pieces.getAdj = function(x,y,sub) {
+Pieces.getAdj = function(x,y) {
     var neighborCount = 0;
     var neighbors = [];
     for(var a = Math.max(0, x - 1); a <= Math.min(x+1,KGDN.grid[0]-1) ; a++){
         for(var b = Math.max(0, y - 1); b <=  Math.min(y+1,KGDN.grid[1]-1); b++){
             if(!(a == x && b == y) 
                && Pieces.grid[a][b] != 0 
-               && Pieces.grid[a][b].sub === sub
               ){
                 neighborCount++;
                 neighbors.push(Pieces.grid[a][b]);
@@ -123,20 +126,33 @@ Pieces.getConnected = function(x,y){
     return visited;
 };
     
-Pieces.growByAdjCount = function(x,y,subreddit,adjThreshold,scoreThreshold){
-    var neighbors = Pieces.getAdj(x,y,subreddit);
-      var newScore = 0;
-     var scalar = neighbors.length/(neighbors.length+1);
-     for(var nI = 0; nI < neighbors.length; nI++){
-         newScore += neighbors[nI].score;
-     }   
-    if(neighbors.length >= adjThreshold && newScore > scoreThreshold){
-        for(var nI = 0; nI < neighbors.length; nI++){
-            neighbors[nI].score =Math.floor(neighbors[nI].score * scalar);
+
+Pieces.inGrid = function(x,y){
+    return x > 0 && x  < KGDN.grid[0] &&
+         y  > 0 && y < KGDN.grid[1];
+};
+
+Pieces.growByAdjCount = function(x,y,scoreThreshold,growthRate){
+    var grows = false;
+  
+        for(var i=0; i < Pieces.neighbs.length; i++){
+            var off = Pieces.neighbs[i];
+            console.log((x + off[0]) + " " + (y + off[1]));
+            if(Pieces.inGrid(x +off[0],y + off[1]) 
+               && !Pieces.grid[x+off[0]][y + off[1]] 
+                 && !Pieces.growth[x+off[0]][y + off[1]] 
+               && Pieces.grid[x][y].score > scoreThreshold 
+               && Math.random() > growthRate){
+                    console.log("Score: " + Pieces.grid[x][y].score);
+                grows = true;
+                Pieces.growth[x +off[0]][y + off[1]] = new Piece(x +off[0],y + off[1],"Growth",Math.floor(Pieces.grid[x][y].score/4),Pieces.grid[x][y].sub,false,false);
+               // console.log("GROWING " + x + " " + y);
+                Pieces.growth[x +off[0]][y + off[1]].mesh[0].material.opacity = 0.5;
+                Pieces.grid[x][y].score = Math.floor(Pieces.grid[x][y].score *  0.75);
+                }
             }
-        Pieces.growth[x][y] = new Piece(x,y,"Growth",newScore/neighbors.length * scalar ,subreddit,false,false);
-        }
-    return neighbors.length;
+        
+    return grows;
 };
 
 
@@ -153,29 +169,36 @@ Pieces.makeGrid = function(){
 
 Pieces.grow = function(){
  //   var grid = Pieces.makeGrid();
+            for(var x = 0; x < KGDN.grid[0]; x++){
+        for(var y = 0; y < KGDN.grid[1]; y++){
+            if(Pieces.growth[x][y] != undefined){
+            Pieces.grid[x][y] = Pieces.growth[x][y];
+                Pieces.grid[x][y].mesh[0].material.opacity = 1;  
+                }
+            }}
+
         for(var x = 0; x < KGDN.grid[0]; x++){
         Pieces.growth[x] = [];
         for(var y = 0; y < KGDN.grid[1]; y++){
-            Pieces.growth[x][y] = 0;
+            Pieces.growth[x][y] = undefined;
             }}
     
     for (var x = 0; x <  KGDN.grid[1]; x++){
         var neiStr = " "; 
         for(var y = 0; y < KGDN.grid[0]; y++){
-            for(var i = 0; i < KGDN.subreddits.length; i++){
-                   if(Pieces.grid[x][y] == 0){
-                       neiStr += " " +  Pieces.growByAdjCount(x,y,KGDN.subreddits[i],3,40);
-                       }
-            }
+            
+                if(!Pieces.grid[x][y].stem && Pieces.grid[x][y].sub != undefined ){   
+                    var sub = Pieces.grid[x][y].sub;
+                    neiStr += " " +  Pieces.growByAdjCount(x,y,
+                                                           Pieces.growthParams[sub][0], Pieces.growthParams[sub][1])
+                    
+                        ? "X" : "_";
+                    }
+                       
             }
 
-        for(var x = 0; x < KGDN.grid[0]; x++){
-        for(var y = 0; y < KGDN.grid[1]; y++){
-            if(Pieces.growth[x][y] === 0){
-            Pieces.grid[x][y] = Pieces.growth[x][y];
-                }
-            }}
-   //    console.log(neiStr);
+
+   //   console.log(neiStr);
         }
 };
     
@@ -186,13 +209,13 @@ Pieces.loadPiece = function(subreddit,stem,x,y,falling){
     if (x === undefined || y === undefined || falling === undefined){
         x = _.random(KGDN.grid[0]-1);
         y =  _.random(KGDN.grid[1]-1);
-        console.log("Autoplacing piece..");
+ //       console.log("Autoplacing piece..");
         falling = true;
         }
 
     var urlBase = stem ? "stem" : "flower";
     var req = Pieces.nextReq++;
-    console.log("Loading " + urlBase + " - " + subreddit + " " + req);
+   // console.log("Loading " + urlBase + " - " + subreddit + " " + req);
     var unrealizedPiece = new Piece(x,y,
                            
                             "Unrealized", 
@@ -201,8 +224,13 @@ Pieces.loadPiece = function(subreddit,stem,x,y,falling){
                             stem,falling);
     $.getJSON(urlBase + "/" +  subreddit + "/" + req, 
               function(data){
-                  console.log("Receiving" + urlBase + " - " + subreddit + " " + req);
+                //  console.log("Receiving" + urlBase + " - " + subreddit + " " + req);
                   unrealizedPiece.text = data["text"];
+                  if(data["parent-body"] != undefined){
+                      
+                      unrealizedPiece.parentBody = data["parent-body"];
+                      //alert(unrealizedPiece.parentBody);
+                      }
                   unrealizedPiece.score = data["ups"] - data["downs"];
                   if(!falling)
                       unrealizedPiece.place();

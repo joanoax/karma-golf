@@ -46,7 +46,7 @@
     (include-js "//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")
     (include-js "/js/three.min.js")
     (include-js "/js/gentilis_font/gentilis_regular.typeface.js")
-   
+    (include-js "/js/CSSRender.js")
     (include-js "/js/cursor.js")
     (include-js "/js/piece.js")
     (include-js "/js/pieces.js")

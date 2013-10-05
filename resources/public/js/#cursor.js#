@@ -43,7 +43,7 @@ Cursor.trim = function(){
             Pieces.growth[a][b] = undefined;
 }}
         KGDN.trimsLeft--;
-        $("#trims").html("" + KGDN.trimsLeft);
+    $("#trims").html("" + KGDN.trimsLeft);
     
             };
 
