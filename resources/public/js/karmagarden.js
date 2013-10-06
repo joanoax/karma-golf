@@ -98,7 +98,7 @@ KGDN.init = function (){
     
     //Initialize piece data and meshes.
  
-
+            KGDN.draw();
 
     
     
@@ -133,7 +133,7 @@ KGDN.init = function (){
             });
     var catScale = 7;
     KGDN.cat = new THREE.Mesh(new THREE.PlaneGeometry(5*catScale,4*catScale),catMat);
-                                               KGDN.cat.position.set(-14,-25,-80);
+                                               KGDN.cat.position.set(65,-30,-80);
                                                
                                                
     KGDN.scene.add(KGDN.cat);
@@ -237,6 +237,7 @@ KGDN.placeFalling = function(){
                 if(!piece.stem){
                 KGDN.scene.remove(Pieces.grid[connected[j][0]][connected[j][1]].group);
                 Pieces.grid[connected[j][0]][connected[j][1]] = 0;
+                    
                     }
                 }
             }
@@ -261,7 +262,6 @@ KGDN.placeFalling = function(){
     $("#trims").html("" + KGDN.trimsLeft);
     Pieces.grow();
         Pieces.falling = Pieces.unplacedQueue.shift();
-    
 };
 
 KGDN.updateHTML = function(){
@@ -302,10 +302,10 @@ $(document).ready(function(){
     // Start the game loop
 
     $("#start-game").click(function(){
-            
+                KGDN.init();    
         $(".loading").fadeOut(3000,function(){
-        KGDN.init();
-        KGDN.draw();
+
+
         KGDN._intervalId = setInterval(KGDN.run, 0);
             $(document).keydown(function(event){
                 if(event.which == 32){

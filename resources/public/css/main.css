@@ -6,14 +6,15 @@ height:100%;
 width:100%;
 }
 .contents{
-text-align:center;
+text-align:left;
 position: relative;
 font-family: "Courier New", serif;
-
+font-weight:bold;
 font-size: 12pt;
-color:#FFFFFF;
+color:#000;
 //opacity:1;
-top: 80px;
+top: 60px;
+left:10px;
 margin: auto;
 width: 450px;
 height: 90px;
@@ -26,7 +27,7 @@ h1,h2,h3{
         
 h1{
 font-size: 70px;
-width: 100%;
+width: 600px;
 text-align: center;
 }
 h2{
@@ -98,15 +99,15 @@ background-color: rgba(0,0,0,0.0);
     }
 #convo-bubble{
     background-size: 100% 100%;
-    background-image: url("/img/convo-bottom.png");
+    background-image: url("/img/convo-top.png");
      background-repeat: no-repeat;
-    left: 0px;
-    bottom: 50px;
+    left: 40px;
+    bottom: 80px;
     opacity:1;
     z-index: 1;
     position: absolute;
     width: 600px;
-    height:250px;
+    height:220px;
 }
 .score-box{
     
@@ -116,9 +117,9 @@ background-color: rgba(0,0,0,0.0);
 
 .thetitle{
 position:absolute;
-bottom:20px;
+bottom:30px;
 left:20px;
-width:100px;
+width:600px;
 z-index: 1003;
 height: 50px;
 }

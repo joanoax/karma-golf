@@ -38,7 +38,7 @@ Pieces.init = function(){
             }}
 
     //Load stems.
-    $.ajaxSetup( { "async": false } );
+ //   $.ajaxSetup( { "async": false } );
     var px,py;
     for (var i= 0; i < KGDN.subreddits.length; i++){
           
@@ -147,7 +147,7 @@ Pieces.growByAdjCount = function(x,y,scoreThreshold,growthRate){
                 grows = true;
                 Pieces.growth[x +off[0]][y + off[1]] = new Piece(x +off[0],y + off[1],"Growth",Math.floor(Pieces.grid[x][y].score/4),Pieces.grid[x][y].sub,false,false);
                // console.log("GROWING " + x + " " + y);
-                Pieces.growth[x +off[0]][y + off[1]].mesh[0].material.opacity = 0.5;
+                Pieces.growth[x +off[0]][y + off[1]].mesh[0].material.opacity = 0.33;
                 Pieces.grid[x][y].score = Math.floor(Pieces.grid[x][y].score *  0.75);
                 }
             }
