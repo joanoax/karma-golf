@@ -101,7 +101,7 @@ KGDN.init = function (){
     KGDN.projector = new THREE.Projector();
 
     // set some camera attributes
-    var VIEW_ANGLE = 40,
+    var VIEW_ANGLE = 45,
     ASPECT = WIDTH / HEIGHT,
     NEAR = 0.1,
     FAR = 5000;
@@ -116,7 +116,7 @@ KGDN.init = function (){
                                              maxLights: 7
                                             });
     KGDN.camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
-    //KGDN.camera.position.z = 300;
+   // KGDN.camera.position.z = 30;
     KGDN.scene = new THREE.Scene();
     
     //Initialize piece data and meshes.
