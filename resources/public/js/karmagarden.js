@@ -294,14 +294,14 @@ KGDN.placeFalling = function(){
         var points = (3 - KGDN.pieceDist(theStem.x,theStem.y,Pieces.falling.x,Pieces.falling.y));
         points *= 7;
             KGDN.yinScore += points;
-        KGDN.score += points;
+        KGDN.score += Pieces.falling.score;
         }
     if(KGDN.yinScore <= 0){
         KGDN.stop();
         }
     KGDN.yinScore = Math.min(Math.max(KGDN.yinScore,0),100);
     KGDN.animRot(yinScoreOld*2,KGDN.yinScore*2,1000);
-    $("#points").html((points >= 0 ? "+" : " ") + points + "!");
+ //   $("#points").html((points >= 0 ? "+" : " ") + points + "!");
     $("#score").html("" + KGDN.score);
     $("#trims").html("" + KGDN.trimsLeft);
     Pieces.grow();
