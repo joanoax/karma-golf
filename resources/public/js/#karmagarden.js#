@@ -292,7 +292,7 @@ KGDN.placeFalling = function(){
     
     if(theStem){
         var points = (3 - KGDN.pieceDist(theStem.x,theStem.y,Pieces.falling.x,Pieces.falling.y));
-        points *= 7;
+        points *= ;
             KGDN.yinScore += points;
         KGDN.score += points;
         }

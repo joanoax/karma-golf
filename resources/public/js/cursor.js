@@ -1,10 +1,12 @@
 Cursor = {};
+Cursor.arrowScale = 162/128;
 Cursor.init = function(img_path){
     Cursor.x = 0;
     Cursor.y = 0;
     Cursor.gridX = -9;
     Cursor.gridY = -9;
     Cursor.txt =  THREE.ImageUtils.loadTexture(img_path);
+    Cursor.arrowTxt = THREE.ImageUtils.loadTexture("/img/cursorArrow.png");
     Cursor.mesh =  new THREE.Mesh(
                     new THREE.PlaneGeometry(KGDN.pieceSize, KGDN.pieceSize,0),
                     new THREE.MeshBasicMaterial({map: Cursor.txt,
@@ -12,11 +14,24 @@ Cursor.init = function(img_path){
                                                  opacity: 1,
                                                 // blending: "AdditiveBlending"
                                                 }));
+    Cursor.arrow = new THREE.Mesh(
+                    new THREE.PlaneGeometry(KGDN.pieceSize * Cursor.arrowScale , KGDN.pieceSize * Cursor.arrowScale,0),
+                    new THREE.MeshBasicMaterial({map: Cursor.arrowTxt,
+                                                 transparent: true,
+                                                 opacity: 0,
+                                                // blending: "AdditiveBlending"
+                                                }));
+    Cursor.arrow.position.set(0,0,0.2);
 
-    Cursor.mesh.position.set(0,0,KGDN.tileGrid.position.z + 10);
+    Cursor.group = new THREE.Object3D();
+    Cursor.group.add(Cursor.arrow);
+    Cursor.group.add(Cursor.mesh);
+    
+
+    Cursor.group.position.set(0,0,KGDN.tileGrid.position.z + 10);
    //  Cursor.light.target = Cursor.mesh.position;
     Cursor.mesh.geometry.dynamic = true; 
-
+      Cursor.arrow.geometry.dynamic = true; 
        
   //  KGDN.scene.add(Cursor.light);
 
@@ -43,7 +58,7 @@ Cursor.trim = function(){
             Pieces.growth[a][b] = undefined;
 }}
         KGDN.trimsLeft--;
-        $("#trims").html("" + KGDN.trimsLeft);
+    $("#trims").html("" + KGDN.trimsLeft);
     
             };
 
@@ -71,7 +86,7 @@ Cursor.update = function(event){
         Cursor.gridX = newVec.x; 
         Cursor.gridY = newVec.y;
     }
-    KGDN.placeOnGrid(Cursor.mesh,Cursor.gridX,Cursor.gridY,KGDN.tileGrid.position.z + 2);
+    KGDN.placeOnGrid(Cursor.group,Cursor.gridX,Cursor.gridY,KGDN.tileGrid.position.z + 2);
     KGDN.placeOnGrid(KGDN.cursLight,Cursor.gridX,Cursor.gridY,KGDN.tileGrid.position.z + 30);
 //    console.log(KGDN.cursLight.position.x + " " + KGDN.cursLight.position.y);
     KGDN.camera.position.x = (event.clientX - window.innerWidth/2)/60;

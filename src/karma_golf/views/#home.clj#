@@ -57,7 +57,7 @@ ipsum dolor sit amet...'
       [:div.containst [:a#start-game "play"]]
       ]
      [:div.game-end
-      [:div.containst [:h1 "game over"]]
+      [:div.containst [:div#gameover "game over"]]
       ]
           [:h1.thetitle "karmagarden"]
      [:div#convo-bubble

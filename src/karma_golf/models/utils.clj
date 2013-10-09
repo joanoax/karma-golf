@@ -53,7 +53,7 @@
 
 (defn comment-maps [subreddit]
   (let [ mapz (atom [])
-        linx (comment-links (from-reddit (str "/r/" subreddit "/top/") "?t=month"))]
+        linx (comment-links (from-reddit (str "/r/" subreddit "/top/") "?t=week"))]
     (doseq [link linx]
          (swap! mapz conj (assoc link :comments (from-reddit (:permalink link) "")))
          (println "Downloaded  " (:permalink link) " " (:score link) " upvotes")

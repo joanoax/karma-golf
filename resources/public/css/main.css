@@ -4,20 +4,21 @@ background-image: url("/img/space-bg.jpg");
 background-size: 100%;
 height:100%;
 width:100%;
+cursor:none;
 }
 .contents{
 text-align:left;
 position: relative;
 font-family: "Courier New", serif;
 font-weight:bold;
-font-size: 12pt;
+font-size: 10pt;
 color:#000;
 //opacity:1;
 top: 60px;
 left:10px;
 margin: auto;
 width: 450px;
-height: 90px;
+height: 110px;
 overflow-y: hidden;
 }
 h1,h2,h3{
@@ -41,6 +42,14 @@ font-size: 12pt;
 border-radius: 10px;
 background-color: rgba(0,0,0,0.0);
 }
+#gameover{
+    text-align: center;
+    
+            font-family: "Courier New", serif;
+        font-weight: bold;
+        color: #FFFFFF;
+        font-size: 240pt;
+}
 #stems>li{
     height:70px;
     overflow: hidden;
@@ -54,7 +63,20 @@ background-color: rgba(0,0,0,0.0);
     width: 100%;
     height: 100%;
     background-color: #eee674;
+    cursor: default;
 }
+.game-end{
+        position:absolute;
+    top: 0px;
+    left: 0px;
+    z-index:600;
+    display:none;
+    margin:0;
+    width: 100%;
+    height: 100%;
+    background-color: #04003e;
+}
+
 .containst{
     top: 50%;
     left: 50%;
@@ -65,7 +87,11 @@ background-color: rgba(0,0,0,0.0);
 
     font-family: "Courier New", serif;
     font-size: 18pt;
-    color: #000000;
+    color: #FFF;
+}
+a:hover{
+    text-decoration: none;
+    cursor: pointer;
 }
 #title{ 
     left: 20px;
@@ -88,15 +114,24 @@ background-color: rgba(0,0,0,0.0);
 #yinyang{
     background-size: 100%;
     background-image: url("/img/yinyang.png");
-    left: -50px;
-    z-index: 1002;
-    bottom: -450px;
-    display: none;
+    left: 50px;
+    z-index: 2;
 //    opacity: 0.7;
-    position: absolute;
-    width: 600px;
-    height:600px;
+    position: relative;
+    width: 40px;
+    height:40px;
+    
     }
+#taobar{position:absolute;
+bottom:30px;
+left: 680px;
+    background-size: 100% 100%;
+    background-image: url("/img/taobar.png");
+    width: 400px;
+    height: 40px;
+    opacity: 0.5;
+    z-index: 1;
+}    
 #convo-bubble{
     background-size: 100% 100%;
     background-image: url("/img/convo-top.png");
@@ -110,7 +145,7 @@ background-color: rgba(0,0,0,0.0);
     height:220px;
 }
 .score-box{
-    
+    opacity: 0.5;
     font-weight:bold;
     font-size: 20pt;
 }
@@ -205,4 +240,12 @@ border-color: #DDF;
 opacity: 0.5;
 background-size:contain;
 background-color: rgba(0,0,0,0.1);
+}
+body{
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
 }
