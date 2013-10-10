@@ -63,12 +63,12 @@ Cursor.trim = function(){
             };
 
 var curscount = 0;
-Cursor.update = function(event){
-    Cursor.x = event.clientX;
-    Cursor.y = event.clientY;
+Cursor.update = function(myEvent){
+    Cursor.x = myEvent.clientX;
+    Cursor.y = myEvent.clientY;
       var vector = new THREE.Vector3(
-        (-event.clientX / window.innerWidth ) * 2 + 1,
-          (event.clientY / window.innerHeight ) * 2 -1,
+        (-myEvent.clientX / window.innerWidth ) * 2 + 1,
+          (myEvent.clientY / window.innerHeight ) * 2 -1,
         0.5 );
     KGDN.projector.unprojectVector(vector, KGDN.camera);
     dir = vector.sub(KGDN.camera.position).normalize();
@@ -89,8 +89,8 @@ Cursor.update = function(event){
     KGDN.placeOnGrid(Cursor.group,Cursor.gridX,Cursor.gridY,KGDN.tileGrid.position.z + 2);
     KGDN.placeOnGrid(KGDN.cursLight,Cursor.gridX,Cursor.gridY,KGDN.tileGrid.position.z + 30);
 //    console.log(KGDN.cursLight.position.x + " " + KGDN.cursLight.position.y);
-    KGDN.camera.position.x = (event.clientX - window.innerWidth/2)/60;
-    KGDN.camera.position.y = -(event.clientY - window.innerHeight/2) /60;
+    KGDN.camera.position.x = (myEvent.clientX - window.innerWidth/2)/60;
+    KGDN.camera.position.y = -(myEvent.clientY - window.innerHeight/2) /60;
 };
 
 

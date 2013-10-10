@@ -116,7 +116,7 @@ KGDN.init = function (){
                                              maxLights: 7
                                             });
     KGDN.camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
-   // KGDN.camera.position.z = 30;
+  //  KGDN.camera.position.z = 30;
     KGDN.scene = new THREE.Scene();
     
     //Initialize piece data and meshes.
@@ -185,7 +185,7 @@ KGDN.init = function (){
     Cursor.group.rotateZ(Math.PI/2);
     KGDN.scene.add(Cursor.group);        
  // window.setInterval(function(){Pieces.loadPiece("AskReddit",false)}, 500);
-        window.onmousemove = Cursor.update;
+       $(document).mousemove(function(event){KGDN.mouseEv = event;});
     window.oncontextmenu = function(event) {
     event.preventDefault();
     event.stopPropagation();
@@ -204,6 +204,8 @@ window.requestAnimFrame = (function(){
           };
 })();
 KGDN.draw = function() {
+    if(KGDN.mouseEv != undefined)
+    Cursor.update(KGDN.mouseEv);
     requestAnimFrame(KGDN.draw);
     KGDN.renderer.render(KGDN.scene, KGDN.camera);
     };
@@ -238,8 +240,8 @@ KGDN.update = function () {
         var bnd = function (x, l, u) { return Math.max(l,Math.min(x,u));};
         Cursor.gridX = bnd(Cursor.gridX + off[0], 0, KGDN.grid[0]-1);
         Cursor.gridY = bnd(Cursor.gridY + off[1], 0, KGDN.grid[1]-1);
-          KGDN.placeOnGrid(Cursor.group,Cursor.gridX,Cursor.gridY,KGDN.tileGrid.position.z + 2);
- KGDN.placeOnGrid(KGDN.cursLight,Cursor.gridX,Cursor.gridY,KGDN.tileGrid.position.z + 30);
+      //    KGDN.placeOnGrid(Cursor.group,Cursor.gridX,Cursor.gridY,KGDN.tileGrid.position.z + 2);
+ //KGDN.placeOnGrid(KGDN.cursLight,Cursor.gridX,Cursor.gridY,KGDN.tileGrid.position.z + 30);
 }
     };
 
