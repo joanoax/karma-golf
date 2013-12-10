@@ -49,14 +49,8 @@ Pieces.init = function(){
         }
     
         $.ajaxSetup( { "async": true } );
-    
-
-    Pieces.falling = new Piece(Cursor.gridX,
-                              Cursor.gridY,
-                              "hi",
-                              25,
-                              KGDN.subreddits[_.random(KGDN.subreddits.length-1)],
-                                              false,true);
+          var  subreddit = Pieces.stems[_.random(Pieces.stems.length-1)].sub;
+    Pieces.falling = Pieces.loadPiece(subreddit,false,8,8,true);;
     };
 
 

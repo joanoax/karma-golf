@@ -1,22 +1,23 @@
-KGDN = {};
-KGDN.fps = 60;
-KGDN.bgLayers = [];
-KGDN.bgZs = [-250,-220,-120];
-KGDN.camOffset = [0.0,10.0];
-KGDN.velocity = 2;
-KGDN.grid = [13,13];
-KGDN.score = 00;
-KGDN.diff = [0,0];
-KGDN.gameRunning = false;
-var diff;
-KGDN.trimsLeft = 5;
-KGDN.yinScore = 100;
-KGDN.gridSize = 100;
+KGDN = {
+    fps: 60,
+    bgLayers: [],
+    bgZs: [-250,-220,-120],
+    camOffset:  [0.0,10.0],
+    velocity:  2,
+    grid: [13,13],
+    score:  00,
+    diff: [0,0],
+    gameRunning false,
+    trimsLeft: 5,
+    yinScore: 100,
+    gridSize: 100,
 KGDN.hasParentOnboard = false;
 KGDN.parentOnboard = [];
 KGDN.pieceSize = KGDN.gridSize/KGDN.grid[0];
 KGDN.subreddits = ["AskReddit", "worldnews" ,  "science" ,  "gaming" ,  "WTF" ];
 
+
+var diff;
 String.prototype.capitalize = function() {
     return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
 };
